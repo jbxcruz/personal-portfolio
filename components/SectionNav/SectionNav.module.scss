@@ -1,0 +1,20 @@
+.viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  will-change: transform;
+}
+
+.cell {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}

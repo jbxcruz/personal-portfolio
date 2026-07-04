@@ -1,0 +1,56 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 170 / 90; /* gives the box a height so the feet can anchor to the B */
+}
+
+.faller {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.svg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  display: block;
+}
+
+.standing { width: 100%; }
+.falling  { width: 106%; } /* cropped frames sized so the body matches the standing one */
+.splat    { width: 112%; }
+
+.bubble {
+  position: absolute;
+  bottom: 210%;
+  left: 50%;
+  white-space: nowrap;
+  letter-spacing: normal;
+  background: var(--white);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 0.4rem 0.7rem;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--ink);
+}

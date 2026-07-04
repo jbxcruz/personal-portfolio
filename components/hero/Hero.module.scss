@@ -1,0 +1,97 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  user-select: none;
+  -webkit-user-select: none; /* Safari and iOS */
+}
+.snap {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.scrollWrap {
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.nameWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(4rem, 20vw, 12rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.perch {
+  position: relative;
+  display: inline-block;
+}
+
+.mascotSlot {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 0.17em);
+  transform: translateX(-50%);
+  width: 0.5em;
+}
+
+.subhead {
+  margin: 1rem 0 0;
+  font-family: var(--font-display), sans-serif; /* same font as JEBBY */
+  font-weight: 400;                              /* keep 400, this font is heavy by design */
+  font-size: clamp(0.9rem, 2.6vw, 1.4rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.scrollCue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 32px;
+  margin-inline: auto;      /* center without a transform, so hover lift stays centered */
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--white);
+  border: var(--border);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.scrollCue:hover {
+  transform: translateY(-4px);
+  box-shadow: 5px 8px 0 var(--ink);
+}
+
+.scrollCue:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.cueArrow {
+  font-size: 1rem;
+  line-height: 1;
+}

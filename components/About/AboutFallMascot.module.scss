@@ -1,0 +1,29 @@
+.wrap {
+  position: absolute;
+  left: 6vw;         /* horizontal spot on the left where it falls and lands */
+  bottom: 18%;       /* GROUND LEVEL: this is the tags line. Raise/lower to align with your tags. */
+  width: 100px;      /* <-- SIZE. Matched to the intro character. Change to resize. */
+  aspect-ratio: 177 / 214;
+  z-index: 1;
+}
+
+.faller {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+}
+
+.svg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  display: block;
+}
+
+.standing { width: 100%; }   /* Group_8, the landed mascot */
+.falling  { width: 102%; }   /* sized so the body matches across frames */
+.splat    { width: 108%; }
