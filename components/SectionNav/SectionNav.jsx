@@ -7,16 +7,13 @@ import styles from "./SectionNav.module.scss";
 const NavContext = createContext(null);
 export const useNav = () => useContext(NavContext);
 
-// The path the user travels, as grid cells.
-// Intro is top-left, About sits directly below it, Projects sits to About's right.
-// Add more sections to the right by continuing the row: { id: "contact", col: 2, row: 1 }.
 const CELLS = [
   { id: "intro", col: 0, row: 0 },
   { id: "about", col: 0, row: 1 },
   { id: "projects", col: 1, row: 1 },
 ];
 
-const COOLDOWN = 750; // ms between moves, stops fast wheels/trackpads skipping sections
+const COOLDOWN = 750;
 
 export default function SectionNav({ chrome, sections }) {
   const [index, setIndex] = useState(0);
@@ -28,6 +25,9 @@ export default function SectionNav({ chrome, sections }) {
   );
   const cooldownRef = useRef(0);
   const touchRef = useRef(null);
+  const lockedRef = useRef(false); // NEW: blocks navigation while true
+
+  const setLocked = useCallback((v) => { lockedRef.current = !!v; }, []); // NEW
 
   useEffect(() => {
     const update = () => setDims({ w: window.innerWidth, h: window.innerHeight });
@@ -53,6 +53,7 @@ export default function SectionNav({ chrome, sections }) {
   useEffect(() => {
     const onWheel = (e) => {
       e.preventDefault();
+      if (lockedRef.current) return; // NEW
       const now = Date.now();
       if (now - cooldownRef.current < COOLDOWN) return;
       const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -61,6 +62,7 @@ export default function SectionNav({ chrome, sections }) {
       go(d > 0 ? 1 : -1);
     };
     const onKey = (e) => {
+      if (lockedRef.current) return; // NEW
       if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
         e.preventDefault();
         go(1);
@@ -73,6 +75,7 @@ export default function SectionNav({ chrome, sections }) {
       touchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     };
     const onTouchEnd = (e) => {
+      if (lockedRef.current) return; // NEW
       if (!touchRef.current) return;
       const dx = e.changedTouches[0].clientX - touchRef.current.x;
       const dy = e.changedTouches[0].clientY - touchRef.current.y;
@@ -80,7 +83,7 @@ export default function SectionNav({ chrome, sections }) {
       const ay = Math.abs(dy);
       if (Math.max(ax, ay) > 45) {
         const primary = ay >= ax ? dy : dx;
-        go(primary < 0 ? 1 : -1); // swipe up or left goes forward
+        go(primary < 0 ? 1 : -1);
       }
       touchRef.current = null;
     };
@@ -101,7 +104,7 @@ export default function SectionNav({ chrome, sections }) {
   const x = -cell.col * dims.w;
   const y = -cell.row * dims.h;
 
-  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length };
+  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length, setLocked }; // setLocked added
 
   return (
     <NavContext.Provider value={value}>

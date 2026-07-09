@@ -1,0 +1,51 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden; /* the exit drop leaves through the section floor cleanly */
+}
+
+.portalPos {
+  position: absolute;
+  top: 9vh;                          /* margin from the top edge */
+  right: 4vw;                        /* margin from the right edge */
+  width: 230px;                      /* portal size */
+  aspect-ratio: 248 / 129;           /* matches the shared portal crop */
+}
+
+.portalSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* The mascot's landing column: horizontally centered under the portal, feet on the About ground line */
+.mascotCol {
+  position: absolute;
+  right: calc(4vw + 65px);           /* portal right + half portal width - half mascot width */
+  bottom: 22%;                       /* GROUND: same level as the About tags line */
+  width: 100px;                      /* mascot size, matched to Intro/About */
+  height: 0;
+}
+
+.faller {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+}
+
+.svg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  display: block;
+}
+
+.falling { width: 102%; }
+.splat   { width: 108%; }
+.idle    { width: 100%; }
