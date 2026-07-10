@@ -276,3 +276,36 @@
   align-items: center;
   justify-content: center;
 }
+
+
+
+@media (max-width: 900px) {
+  .skills { padding: 4.5rem 1.1rem 1.25rem; justify-content: center; gap: 0.5rem; }
+  .heading {
+    position: static;
+    transform: none;
+    align-self: flex-start;
+    font-size: clamp(1.5rem, 6.5vw, 2.1rem);
+    margin: 0 0 0.4rem;
+  }
+  .layout { flex-direction: column; align-items: center; gap: 0.9rem; }
+  .stageWrap { gap: 0.6rem; }
+  .stage { width: min(180px, 52vw); }
+  .stageChar { width: 58%; }
+  .arrow { width: 36px; height: 36px; font-size: 1.1rem; }
+  .nameplate { min-height: 68px; gap: 0.25rem; }
+  .charName { font-size: 1.05rem; }
+  .star { width: 15px; height: 15px; }
+  .dots { gap: 0.3rem; }
+  .dot { width: 7px; height: 7px; }
+  .statsCol { width: min(400px, 100%); }
+  .group { margin-bottom: 0.8rem; }
+  .groupHead { gap: 0.45rem; margin-bottom: 0.45rem; }
+  .groupDot { width: 16px; height: 16px; border-width: 2px; }
+  .groupName { font-size: 0.95rem; }
+  .barRow { grid-template-columns: 84px 1fr 36px; gap: 0.45rem; margin-bottom: 0.32rem; }
+  .barName { font-size: 0.7rem; }
+  .barTrack { height: 11px; }
+  .barPct { font-size: 0.68rem; }
+  .bubble { font-size: 0.78rem; }
+}

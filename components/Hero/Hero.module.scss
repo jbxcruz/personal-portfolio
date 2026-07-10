@@ -95,3 +95,7 @@
   font-size: 1rem;
   line-height: 1;
 }
+
+@media (max-width: 640px) {
+  .scrollCue { bottom: 20px; font-size: 0.72rem; }
+}

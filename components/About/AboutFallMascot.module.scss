@@ -27,3 +27,8 @@
 .standing { width: 100%; }   /* Group_8, the landed mascot */
 .falling  { width: 102%; }   /* sized so the body matches across frames */
 .splat    { width: 108%; }
+
+
+@media (max-width: 760px) {
+  .wrap { width: 58px; left: auto; right: 6vw; bottom: 6%; }
+}

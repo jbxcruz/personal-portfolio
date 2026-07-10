@@ -241,3 +241,13 @@ button.crumb:hover {
   border-radius: 999px;
   padding: 0.3rem 0.7rem;
 }
+
+
+@media (max-width: 640px) {
+  .window { height: min(460px, 66vh); }
+  .body { padding: 0.8rem; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 0.6rem 0.35rem; }
+  .folderSvg { width: 44px; }
+  .folderName { font-size: 0.7rem; }
+  .titleText { font-size: 0.78rem; }
+}

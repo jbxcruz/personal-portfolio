@@ -14,24 +14,20 @@ const CELLS = [
   { id: "skills", col: 1, row: 2 },
   { id: "experience", col: 0, row: 2 },
   { id: "education", col: -1, row: 2 },
+  { id: "certs", col: -1, row: 3 },
 ];
-
 
 const COOLDOWN = 750;
 
 export default function SectionNav({ chrome, sections }) {
   const [index, setIndex] = useState(0);
   const indexRef = useRef(0);
-  const [dims, setDims] = useState(() =>
-    typeof window !== "undefined"
-      ? { w: window.innerWidth, h: window.innerHeight }
-      : { w: 0, h: 0 }
-  );
+  const [dims, setDims] = useState({ w: 0, h: 0 }); // same on server & client: no hydration mismatch
   const cooldownRef = useRef(0);
   const touchRef = useRef(null);
-  const lockedRef = useRef(false); // NEW: blocks navigation while true
+  const lockedRef = useRef(false);
 
-  const setLocked = useCallback((v) => { lockedRef.current = !!v; }, []); // NEW
+  const setLocked = useCallback((v) => { lockedRef.current = !!v; }, []);
 
   useEffect(() => {
     const update = () => setDims({ w: window.innerWidth, h: window.innerHeight });
@@ -54,10 +50,21 @@ export default function SectionNav({ chrome, sections }) {
     setIndex(c);
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
+    const scrollableFrom = (target) => {
+      const el = target?.closest?.("[data-scroll]");
+      return el && el.scrollHeight > el.clientHeight + 1 ? el : null;
+    };
+
     const onWheel = (e) => {
+      const sc = scrollableFrom(e.target);
+      if (sc) {
+        const atTop = sc.scrollTop <= 0 && e.deltaY < 0;
+        const atBottom = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 1 && e.deltaY > 0;
+        if (!atTop && !atBottom) return; // let the inner area scroll natively
+      }
       e.preventDefault();
-      if (lockedRef.current) return; // NEW
+      if (lockedRef.current) return;
       const now = Date.now();
       if (now - cooldownRef.current < COOLDOWN) return;
       const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -66,7 +73,7 @@ export default function SectionNav({ chrome, sections }) {
       go(d > 0 ? 1 : -1);
     };
     const onKey = (e) => {
-      if (lockedRef.current) return; // NEW
+      if (lockedRef.current) return;
       if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
         e.preventDefault();
         go(1);
@@ -76,20 +83,26 @@ export default function SectionNav({ chrome, sections }) {
       }
     };
     const onTouchStart = (e) => {
-      touchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      touchRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+        inScroll: !!scrollableFrom(e.target),
+      };
     };
     const onTouchEnd = (e) => {
-      if (lockedRef.current) return; // NEW
+      if (lockedRef.current) return;
       if (!touchRef.current) return;
-      const dx = e.changedTouches[0].clientX - touchRef.current.x;
-      const dy = e.changedTouches[0].clientY - touchRef.current.y;
+      const { x, y, inScroll } = touchRef.current;
+      touchRef.current = null;
+      if (inScroll) return; // finger was scrolling content, not navigating
+      const dx = e.changedTouches[0].clientX - x;
+      const dy = e.changedTouches[0].clientY - y;
       const ax = Math.abs(dx);
       const ay = Math.abs(dy);
       if (Math.max(ax, ay) > 45) {
         const primary = ay >= ax ? dy : dx;
         go(primary < 0 ? 1 : -1);
       }
-      touchRef.current = null;
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
@@ -105,10 +118,11 @@ export default function SectionNav({ chrome, sections }) {
   }, [go]);
 
   const cell = CELLS[index];
-  const x = -cell.col * dims.w;
-  const y = -cell.row * dims.h;
+  const measured = dims.w > 0;
+  const x = measured ? -cell.col * dims.w : 0;
+  const y = measured ? -cell.row * dims.h : 0;
 
-  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length, setLocked }; // setLocked added
+  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length, setLocked };
 
   return (
     <NavContext.Provider value={value}>
@@ -123,7 +137,12 @@ export default function SectionNav({ chrome, sections }) {
             <div
               key={c.id}
               className={styles.cell}
-              style={{ left: `${c.col * 100}vw`, top: `${c.row * 100}vh` }}
+              style={{
+                left: measured ? c.col * dims.w : `${c.col * 100}vw`,
+                top: measured ? c.row * dims.h : `${c.row * 100}vh`,
+                width: measured ? dims.w : "100vw",
+                height: measured ? dims.h : "100vh",
+              }}
             >
               {sections[i]}
             </div>

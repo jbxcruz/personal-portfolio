@@ -180,3 +180,27 @@
   font-size: 0.75rem;
   opacity: 0.6;
 }
+
+
+
+@media (max-width: 760px) {
+  .education { padding: 4.5rem 1.1rem 1.5rem; justify-content: center; }
+  .heading {
+    position: static;
+    align-self: flex-start;
+    font-size: clamp(1.5rem, 6.5vw, 2.1rem);
+    margin: 0 0 0.6rem;
+  }
+  .cards { gap: 0.8rem; }
+  .card { padding: 0.8rem 0.9rem 0.9rem; border-top-width: 8px; }
+  .charZone { width: 74px; margin-bottom: 0.4rem; }
+  .degree { font-size: 0.98rem; margin-bottom: 0.25rem; }
+  .school { font-size: 0.7rem; line-height: 1.35; margin-bottom: 0.45rem; }
+  .years { font-size: 0.66rem; padding: 0.14rem 0.55rem; }
+  .honor { top: 8px; right: 9px; font-size: 0.6rem; padding: 0.18rem 0.5rem 0.18rem 0.35rem; }
+  .medalSvg { width: 12px; height: 17px; }
+  .progressTrack { height: 10px; width: min(200px, 88%); }
+  .loading { font-size: 0.66rem; }
+  .progressWrap { gap: 0.35rem; }
+  .bubble { font-size: 0.76rem; }
+}

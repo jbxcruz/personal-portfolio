@@ -183,3 +183,13 @@
   margin: 0;
   max-width: 62ch;
 }
+
+
+@media (max-width: 760px) {
+  .map { height: 300px; margin-top: 0.5rem; }
+  .lvTag { width: 46px; height: 36px; font-size: 0.85rem; }
+  .lvYears { font-size: 0.58rem; }
+  .jebby { width: 52px; margin-left: -26px; margin-top: -56px; }
+  .quest { height: auto; min-height: 200px; }
+  .heading { font-size: clamp(1.7rem, 7vw, 2.6rem); }
+}
