@@ -16,9 +16,9 @@ export default function Hero() {
 
   // Every time Intro becomes active: drop the mascot again and replay the text entrance.
   useEffect(() => {
-    if (nav?.activeId === "intro") {
-      setFallSignal((s) => s + 1);
-      titleControls.set({ opacity: 0, scale: 0.5 });
+      if (nav?.activeId === "intro") {
+        nav?.setLocked?.(true);
+        setFallSignal((s) => s + 1);
       titleControls.start({
         opacity: 1,
         scale: 1,
@@ -49,7 +49,7 @@ export default function Hero() {
             <span className={styles.perch}>
               B
               <span className={styles.mascotSlot}>
-                <Mascot trigger={trigger} fallSignal={fallSignal} />
+                <Mascot trigger={trigger} fallSignal={fallSignal} onReady={() => nav?.setLocked?.(false)} />
               </span>
             </span>
             Y

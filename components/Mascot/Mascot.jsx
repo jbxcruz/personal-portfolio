@@ -59,7 +59,7 @@ function SplatSVG() {
   );
 }
 
-export default function Mascot({ trigger = 0, fallSignal = 0 }) {
+export default function Mascot({ trigger = 0, fallSignal = 0, onReady }) {
   const [phase, setPhase] = useState("falling"); // falling | splat | standing | ready
   const [bubble, setBubble] = useState(null);
   const body = useAnimationControls();
@@ -100,6 +100,7 @@ export default function Mascot({ trigger = 0, fallSignal = 0 }) {
 
       readyRef.current = true;
       setPhase("ready");
+      onReady?.();
     }
 
     sequence();

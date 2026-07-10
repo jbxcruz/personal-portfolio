@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useAnimationControls } from "framer-motion";
+import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 import styles from "./ProjectsMascot.module.scss";
 import { useNav } from "@/components/SectionNav/SectionNav";
 
@@ -157,16 +157,38 @@ function IdleSVG() {
 const OPENING = [Portal1, Portal2, Portal3, PortalFull, Portal5, Portal6];
 const CLOSING = [PortalFull, PortalFull, PortalFull, Portal3, Portal2, Portal1]; // closing-1, 5 (mascot stripped), 4, 3, 2, 1
 
+const GUIDE_LINES = [
+  "Click a folder to open a project!",
+  "Each folder is one of my projects.",
+  "Go on, snoop through my files.",
+  "The Back button takes you out again.",
+];
+
 export default function ProjectsMascot() {
   const nav = useNav();
   const active = nav?.activeId === "projects";
-  const [portalFrame, setPortalFrame] = useState(-1); // -1 hidden; 0..5 opening; 10..15 closing
-  const [phase, setPhase] = useState("hidden");       // hidden | falling | splat | idle
+  const [portalFrame, setPortalFrame] = useState(-1);
+  const [phase, setPhase] = useState("hidden");
+  const [bubble, setBubble] = useState(null);
   const pos = useAnimationControls();
   const runIdRef = useRef(0);
   const shownRef = useRef(false);
   const portalRef = useRef(null);
   const colRef = useRef(null);
+  const lastLineRef = useRef(-1);
+
+  function guide() {
+    let i;
+    do { i = Math.floor(Math.random() * GUIDE_LINES.length); } while (i === lastLineRef.current);
+    lastLineRef.current = i;
+    setBubble({ id: Date.now(), text: GUIDE_LINES[i] });
+  }
+
+  useEffect(() => {
+    if (!bubble) return;
+    const t = setTimeout(() => setBubble(null), 2800);
+    return () => clearTimeout(t);
+  }, [bubble]);
 
   useEffect(() => {
     if (active) {
@@ -175,7 +197,6 @@ export default function ProjectsMascot() {
       nav?.setLocked?.(true);
       (async () => {
         setPhase("hidden");
-        // Opening frames 1..6
         for (let i = 0; i < OPENING.length; i++) {
           if (runIdRef.current !== myRun) return;
           setPortalFrame(i);
@@ -183,11 +204,9 @@ export default function ProjectsMascot() {
         }
         if (runIdRef.current !== myRun) return;
 
-        // Frame 6 done: spawn the falling mascot from the portal and start closing simultaneously.
         const pRect = portalRef.current?.getBoundingClientRect();
         const cRect = colRef.current?.getBoundingClientRect();
         const startY = pRect && cRect ? pRect.bottom - cRect.bottom : -window.innerHeight * 0.5;
-        // Same speed as the intro: 0.95vh per 0.6s, duration scaled to this fall's distance.
         const fallDuration = Math.abs(startY) / (INTRO_SPEED_VH * window.innerHeight);
 
         setPhase("falling");
@@ -208,8 +227,10 @@ export default function ProjectsMascot() {
         setPhase("splat");
         await wait(200);
         if (runIdRef.current !== myRun) return;
-        setPhase("idle"); // plain standing, no bob, matching the intro
+        setPhase("idle");
         await closing;
+        if (runIdRef.current !== myRun) return;
+        await wait(1000); // hold: interactions stay locked for 1s after the animation ends
         if (runIdRef.current !== myRun) return;
         nav?.setLocked?.(false);
       })();
@@ -217,6 +238,7 @@ export default function ProjectsMascot() {
       const myRun = ++runIdRef.current;
       nav?.setLocked?.(false);
       setPortalFrame(-1);
+      setBubble(null);
       if (!shownRef.current) {
         setPhase("hidden");
         return;
@@ -243,10 +265,30 @@ export default function ProjectsMascot() {
       </div>
 
       <div ref={colRef} className={styles.mascotCol}>
+        <AnimatePresence>
+          {bubble && (
+            <motion.div
+              key={bubble.id}
+              className={styles.bubble}
+              initial={{ opacity: 0, y: 8, scale: 0.8, x: "-50%" }}
+              animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
+              exit={{ opacity: 0, y: 8, scale: 0.8, x: "-50%" }}
+              transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            >
+              {bubble.text}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.div className={styles.faller} animate={pos} initial={{ x: 0, y: 0 }}>
-          {phase === "falling" && <FallingSVG />}
-          {phase === "splat" && <SplatSVG />}
-          {phase === "idle" && <IdleSVG />}
+          <div
+            className={phase === "idle" ? styles.clickable : undefined}
+            onClick={phase === "idle" ? guide : undefined}
+          >
+            {phase === "falling" && <FallingSVG />}
+            {phase === "splat" && <SplatSVG />}
+            {phase === "idle" && <IdleSVG />}
+          </div>
         </motion.div>
       </div>
     </div>

@@ -3,15 +3,15 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  overflow: hidden; /* the exit drop leaves through the section floor cleanly */
+  overflow: hidden;
 }
 
 .portalPos {
   position: absolute;
-  top: 9vh;                          /* margin from the top edge */
-  right: 4vw;                        /* margin from the right edge */
-  width: 230px;                      /* portal size */
-  aspect-ratio: 248 / 129;           /* matches the shared portal crop */
+  top: 9vh;
+  right: 8vw;
+  width: 140px;                 /* matched: portal mascot body = falling mascot body */
+  aspect-ratio: 248 / 129;
 }
 
 .portalSvg {
@@ -20,12 +20,11 @@
   display: block;
 }
 
-/* The mascot's landing column: horizontally centered under the portal, feet on the About ground line */
 .mascotCol {
   position: absolute;
-  right: calc(4vw + 65px);           /* portal right + half portal width - half mascot width */
-  bottom: 22%;                       /* GROUND: same level as the About tags line */
-  width: 100px;                      /* mascot size, matched to Intro/About */
+  right: calc(8vw + 20px);      /* re-centered under the 140px portal */
+  bottom: 22%;
+  width: 100px;
   height: 0;
 }
 
@@ -35,6 +34,11 @@
   right: 0;
   bottom: 0;
   height: 0;
+}
+
+.clickable {
+  pointer-events: auto;         /* only the idle mascot is interactive */
+  cursor: pointer;
 }
 
 .svg {
@@ -49,3 +53,33 @@
 .falling { width: 102%; }
 .splat   { width: 108%; }
 .idle    { width: 100%; }
+
+.bubble {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  white-space: nowrap;
+  letter-spacing: normal;
+  background: var(--white);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 0.4rem 0.7rem;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  box-shadow: 2px 2px 0 var(--ink);
+  pointer-events: none;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--ink);
+}

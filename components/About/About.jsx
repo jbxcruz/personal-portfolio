@@ -46,25 +46,6 @@ export default function About() {
           <span>Writing</span>
         </div>
       </motion.div>
-
-      <motion.button
-        className={styles.nextCue}
-        onClick={() => nav && nav.go(1)}
-        initial={{ opacity: 0 }}
-        animate={active ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ delay: active ? 0.6 : 0, duration: 0.5 }}
-        aria-label="Go to Projects"
-      >
-        <span>Swipe right for more</span>
-        <motion.span
-          className={styles.cueArrow}
-          animate={{ x: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-          aria-hidden="true"
-        >
-          →
-        </motion.span>
-      </motion.button>
     </section>
   );
 }

@@ -15,6 +15,10 @@ function FallingSVG() {
       <rect x="80" y="174" width="15" height="15" fill="#3BB8E5" />
       <rect x="65" y="159" width="15" height="15" fill="#3BB8E5" />
       <rect x="65" y="144" width="15" height="15" fill="#3BB8E5" />
+      <rect x="110" y="114" width="15" height="30" fill="#86CBE4" />
+      <rect x="185" y="74" width="15" height="15" fill="#ADD6E5" />
+      <rect x="140" y="74" width="15" height="30" fill="#86CBE4" />
+      <rect x="185" y="99" width="15" height="30" fill="#86CBE4" />
       <rect x="215" y="159" width="15" height="15" fill="#3BB8E5" />
       <rect x="230" y="144" width="15" height="15" fill="#3BB8E5" />
       <rect x="230" y="129" width="15" height="15" fill="#3BB8E5" />
@@ -80,27 +84,32 @@ export default function AboutFallMascot() {
   const body = useAnimationControls();
   const runIdRef = useRef(0);
 
-useEffect(() => {
+  useEffect(() => {
     if (active) {
+      nav?.setLocked?.(true);
       const myRun = ++runIdRef.current;
       (async () => {
-        const startY = -(window.innerHeight * 0.95); // matches the intro's fall distance
+        const startY = -(window.innerHeight * 0.95);
         setPhase("falling");
-        body.set({ x: 0, opacity: 1, y: startY }); // clean start (clears any exit offset)
+        body.set({ x: 0, opacity: 1, y: startY });
         await wait(150);
         if (runIdRef.current !== myRun) return;
-        await body.start({ y: 0, transition: { duration: 0.6, ease: "easeIn" } }); // matches intro speed
+        await body.start({ y: 0, transition: { duration: 0.6, ease: "easeIn" } });
         if (runIdRef.current !== myRun) return;
         setPhase("splat");
         await wait(200);
         if (runIdRef.current !== myRun) return;
         setPhase("standing");
         await body.start({ y: [-6, 0], transition: { duration: 0.28, ease: "easeOut" } });
+        if (runIdRef.current !== myRun) return;
+        await wait(1000);
+        if (runIdRef.current !== myRun) return;
+        nav?.setLocked?.(false);
       })();
     } else {
+      nav?.setLocked?.(false);
       const myRun = ++runIdRef.current;
       (async () => {
-        // Smooth exit: drift left and fade out instead of vanishing instantly.
         await body.start({ x: -200, opacity: 0, transition: { duration: 0.5, ease: "easeIn" } });
         if (runIdRef.current !== myRun) return;
         setPhase("hidden");
@@ -109,7 +118,6 @@ useEffect(() => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
-  
 
   return (
     <div className={styles.wrap} aria-hidden="true">

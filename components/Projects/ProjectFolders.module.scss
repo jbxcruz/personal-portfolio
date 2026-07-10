@@ -1,0 +1,243 @@
+.window {
+  position: relative;
+  z-index: 3;
+  width: min(860px, 92vw);
+  height: min(560px, 70vh);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 8px 8px 0 var(--ink);
+  overflow: hidden;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.55rem 1rem;
+}
+
+.titleText {
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.winDots {
+  display: flex;
+  gap: 6px;
+}
+
+.winDots span {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border: 2px solid var(--paper);
+}
+
+.crumbBar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--white);
+  border-bottom: 3px solid var(--ink);
+  padding: 0.5rem 0.9rem;
+}
+
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink);
+  border-radius: 6px;
+}
+
+button.crumb:hover {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  cursor: pointer;
+}
+
+.crumbCurrent {
+  opacity: 0.65;
+}
+
+.sep {
+  opacity: 0.5;
+  font-weight: 700;
+}
+
+.homeSvg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.body {
+  flex: 1;
+  overflow: hidden;
+  padding: 1.2rem 1.4rem;
+}
+
+.grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-auto-rows: min-content;
+  gap: 1.1rem 0.8rem;
+  align-content: start;
+  overflow-y: auto;
+}
+
+.folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  padding: 0.6rem 0.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.folder:hover {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.folder:hover .folderSvg {
+  transform: translateY(-4px) rotate(-3deg);
+}
+
+.folderSvg {
+  width: 62px;
+  height: auto;
+  transition: transform 0.18s ease;
+}
+
+.folderName {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--ink);
+  text-align: center;
+}
+
+.detail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.backBtn {
+  align-self: flex-start;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  margin-bottom: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.backBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.detailHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.category {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--ink);
+  padding: 0.32rem 0.7rem;
+  border-radius: 999px;
+}
+
+.count {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+.detailTitle {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.05;
+  margin: 0 0 0.75rem;
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.desc {
+  font-family: var(--font-geist), sans-serif;
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  line-height: 1.55;
+  margin: 0 0 1.2rem;
+  opacity: 0.9;
+}
+
+.group { margin-bottom: 1rem; }
+.group:last-child { margin-bottom: 0; }
+
+.label {
+  display: block;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.5rem;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+.tag {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+}
+
+.badge {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+}
