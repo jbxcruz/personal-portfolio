@@ -15,10 +15,6 @@ function FallingSVG() {
       <rect x="80" y="174" width="15" height="15" fill="#3BB8E5" />
       <rect x="65" y="159" width="15" height="15" fill="#3BB8E5" />
       <rect x="65" y="144" width="15" height="15" fill="#3BB8E5" />
-      <rect x="110" y="114" width="15" height="30" fill="#86CBE4" />
-      <rect x="185" y="74" width="15" height="15" fill="#ADD6E5" />
-      <rect x="140" y="74" width="15" height="30" fill="#86CBE4" />
-      <rect x="185" y="99" width="15" height="30" fill="#86CBE4" />
       <rect x="215" y="159" width="15" height="15" fill="#3BB8E5" />
       <rect x="230" y="144" width="15" height="15" fill="#3BB8E5" />
       <rect x="230" y="129" width="15" height="15" fill="#3BB8E5" />
