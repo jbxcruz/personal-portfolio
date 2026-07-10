@@ -17,7 +17,7 @@ const CELLS = [
   { id: "certs", col: -1, row: 3 },
 ];
 
-const COOLDOWN = 750;
+const COOLDOWN = 1000;
 
 export default function SectionNav({ chrome, sections }) {
   const [index, setIndex] = useState(0);
@@ -72,13 +72,17 @@ useEffect(() => {
       cooldownRef.current = now;
       go(d > 0 ? 1 : -1);
     };
-    const onKey = (e) => {
+const onKey = (e) => {
       if (lockedRef.current) return;
+      const now = Date.now();
+      if (now - cooldownRef.current < COOLDOWN) return;
       if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
         e.preventDefault();
+        cooldownRef.current = now;
         go(1);
       } else if (["ArrowUp", "ArrowLeft", "PageUp"].includes(e.key)) {
         e.preventDefault();
+        cooldownRef.current = now;
         go(-1);
       }
     };
@@ -100,6 +104,9 @@ useEffect(() => {
       const ax = Math.abs(dx);
       const ay = Math.abs(dy);
       if (Math.max(ax, ay) > 45) {
+        const now = Date.now();
+        if (now - cooldownRef.current < COOLDOWN) return;
+        cooldownRef.current = now;
         const primary = ay >= ax ? dy : dx;
         go(primary < 0 ? 1 : -1);
       }
