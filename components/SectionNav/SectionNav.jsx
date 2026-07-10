@@ -12,8 +12,10 @@ const CELLS = [
   { id: "about", col: 0, row: 1 },
   { id: "projects", col: 1, row: 1 },
   { id: "skills", col: 1, row: 2 },
-  { id: "experience", col: 2, row: 2 },
+  { id: "experience", col: 0, row: 2 },
+  { id: "education", col: -1, row: 2 },
 ];
+
 
 const COOLDOWN = 750;
 

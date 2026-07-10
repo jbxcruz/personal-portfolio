@@ -103,7 +103,7 @@ export default function ProjectFolders() {
     <div className={styles.window}>
       {/* title bar */}
       <div className={styles.titleBar}>
-        <span className={styles.titleText}>jebby.exe — Projects</span>
+        <span className={styles.titleText}>jebby.exe — PROJECTS</span>
         <div className={styles.winDots} aria-hidden="true">
           <span /><span /><span />
         </div>
