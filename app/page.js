@@ -6,18 +6,18 @@ import About from "@/components/About/About";
 import Projects from "@/components/Projects/Projects";
 import SectionNav from "@/components/SectionNav/SectionNav";
 import Skills from "@/components/Skills/Skills";
-import Experience from "@/components/Experience/Experience";
+import Education from "@/components/Education/Education";
 
 export default function Home() {
   return (
     <SectionNav
       chrome={<Navbar />}
-          sections={[
+        sections={[
         <Hero key="intro" />,
         <About key="about" />,
         <Projects key="projects" />,
         <Skills key="skills" />,
-        <Experience key="experience" />,
+        <Education key="education" />,
       ]}
     />
   );
