@@ -6,12 +6,12 @@ import styles from "./Skills.module.scss";
 
 const CHARACTERS = [
   {
-    id: "webdev", label: "Web Development", color: "#3BB8E5", stars: 5,
+    id: "webdev", label: "Web Development", color: "#3BB8E5", stars: 4,
     lines: ["I love to design UI/UX", "Frontend? or Backend?", "One day, I'll build my own app.", "My dream is to be a software engineer"],
     groups: [
       { name: "Frontend", skills: [
-        { name: "React", pct: 70 }, { name: "Next.js", pct: 65 }, { name: "TypeScript", pct: 55 },
-        { name: "HTML / CSS", pct: 80 }, { name: "SCSS", pct: 75 }, { name: "Framer Motion", pct: 70 },
+        { name: "React", pct: 65 }, { name: "Next.js", pct: 70 }, { name: "TypeScript", pct: 55 },
+        { name: "HTML / CSS", pct: 80 }, { name: "SCSS", pct: 70 }, { name: "Framer Motion", pct: 65 },
       ]},
       { name: "Backend", skills: [
         { name: "Node.js", pct: 60 }, { name: "PHP", pct: 60 },
@@ -24,7 +24,7 @@ const CHARACTERS = [
     lines: ["I love to write", "I just love to make stories", "Everbody's good at something", "What's your story?"],
     groups: [
       { name: "Writing", skills: [
-        { name: "Copywriting", pct: 70 }, { name: "Creative Writing", pct: 85 },
+        { name: "Copywriting", pct: 65 }, { name: "Creative Writing", pct: 85 },
       ]},
       { name: "Core Skills", skills: [
         { name: "Critical Thinking", pct: 65 }, { name: "Problem Solving", pct: 60 },
@@ -39,13 +39,13 @@ const CHARACTERS = [
     groups: [
       { name: "AI Training", skills: [
         { name: "LLM Evaluation", pct: 70 }, { name: "Data Annotation", pct: 75 },
-        { name: "Benchmark Design", pct: 65 }, { name: "Linguistic AI Auditing", pct: 60 },
+        { name: "Benchmark Design", pct: 60 }, { name: "Linguistic AI Auditing", pct: 60 },
         { name: "Prompt Engineering", pct: 70 }, { name: "AI-assisted Development", pct: 80 },
       ]},
       { name: "Machine Learning", skills: [
         { name: "PyTorch", pct: 55 }, { name: "NumPy  ", pct: 70 }, 
         { name: "Data Visualization", pct: 80 }, { name: "Pandas", pct: 75 },
-        { name: "CNNs (Computer Vision)", pct: 60 }, { name: "Matplotlib", pct: 70 }, { name: "Seaborn", pct: 70 },
+        { name: "CNNs (Computer Vision)", pct: 60 }, { name: "Scikit-learn", pct: 55 }, { name: "Streamlit", pct: 65 },
 
       ]},
     ],
@@ -56,7 +56,7 @@ const CHARACTERS = [
     groups: [
       { name: "Languages", skills: [
         { name: "JavaScript", pct: 70 }, { name: "TypeScript", pct: 60 }, { name: "Python", pct: 70 },
-        { name: "Java", pct: 50 }, { name: "C", pct: 50 }, { name: "SQL", pct: 60 }, { name: "PHP", pct: 60 },
+        { name: "Java", pct: 50 }, { name: "C", pct: 45 }, { name: "SQL", pct: 70 }, { name: "PHP", pct: 60 },
       ]},
     ],
   },
@@ -67,6 +67,7 @@ const CHARACTERS = [
       { name: "Tools & Craft", skills: [
         { name: "Figma", pct: 60 }, { name: "Canva", pct: 80 },
         { name: "Pixel Art", pct: 70 }, { name: "UI/UX Research", pct: 80 },
+        { name: "Capcut", pct: 65 },
       ]},
     ],
   },
@@ -75,7 +76,7 @@ const CHARACTERS = [
     lines: ["Not bad.", "Keep studying", "Trial and errors", "I love to learn new things"],
     groups: [
       { name: "Environment", skills: [
-        { name: "Ubuntu / Linux", pct: 60 }, { name: "PowerShell", pct: 50 },
+        { name: "Ubuntu / Linux", pct: 45 }, { name: "PowerShell", pct: 50 },
         { name: "XAMPP", pct: 50 }, { name: "Vercel", pct: 80 },
       ]},
     ],
