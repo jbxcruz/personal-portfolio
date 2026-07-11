@@ -8,6 +8,7 @@ import SectionNav from "@/components/SectionNav/SectionNav";
 import Skills from "@/components/Skills/Skills";
 import Education from "@/components/Education/Education";
 import Certifications from "@/components/Certifications/Certifications";
+import Playground from "@/components/Playground/Playground";
 
 
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Skills key="skills" />,
         <Education key="education" />,
         <Certifications key="certs" />,
+        <Playground key="playground" />,
       ]}
     />
   );

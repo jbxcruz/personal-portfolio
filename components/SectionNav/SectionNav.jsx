@@ -15,6 +15,7 @@ const CELLS = [
   { id: "experience", col: 0, row: 2 },
   { id: "education", col: -1, row: 2 },
   { id: "certs", col: -1, row: 3 },
+  { id: "playground", col: -1, row: 4 },
 ];
 
 const COOLDOWN = 1000;
