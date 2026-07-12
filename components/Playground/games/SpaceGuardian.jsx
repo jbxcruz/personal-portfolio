@@ -5,14 +5,14 @@ import styles from "../Playground.module.scss";
 import { loadProfile, saveProfile } from "../arcade";
 
 export const WEAPONS = {
-  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 320, maxLvl: 25, upCost: 10,  desc: "1 dmg · average fire rate" },
-  twin:   { name: "Twin Blasters",     cost: 100,  dmg: 1, delay: 320, maxLvl: 25, upCost: 20,  desc: "1 dmg · average rate · twin barrel", twin: true },
-  smc:    { name: "Space Sub-Machine Cannons", cost: 400, dmg: 1, delay: 720, maxLvl: 30, upCost: 65, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 5 },
-  blaster:{ name: "Blaster Cannons",   cost: 450,  dmg: 3, delay: 600, maxLvl: 20, upCost: 30,  desc: "3 dmg · slow rate · AOE", aoe: 46 },
+  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 300, maxLvl: 10, upCost: 10,  desc: "1 dmg · average fire rate" },
+  twin:   { name: "Twin Blasters",     cost: 100,  dmg: 1, delay: 300, maxLvl: 15, upCost: 20,  desc: "1 dmg · average rate · twin barrel", twin: true },
+  smc:    { name: "Space Sub-Machine Cannons", cost: 400, dmg: 1, delay: 600, maxLvl: 30, upCost: 30, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 5 },
+  blaster:{ name: "Blaster Cannons",   cost: 450,  dmg: 3, delay: 650, maxLvl: 20, upCost: 30,  desc: "3 dmg · slow rate · AOE", aoe: 46 },
   smg:    { name: "Space Machine Gun", cost: 750,  dmg: 1, delay: 130, maxLvl: 20, upCost: 50,  desc: "1 dmg · fast fire rate" },
   rocket: { name: "Rocket Missile",    cost: 850,  dmg: 8, delay: 900, maxLvl: 20, upCost: 70,  desc: "8 dmg · very slow · AOE · smoke trail", aoe: 60, big: true, trail: true },
   laser:  { name: "Laser Gun",         cost: 1000, dmg: 5, delay: 340, maxLvl: 15, upCost: 80,  desc: "5 dmg · average fire rate", laser: true },
-  plasma: { name: "Plasma Laser Beam", cost: 2500, dmg: 5, delay: 0,   maxLvl: 25, upCost: 100, desc: "5 dmg · continuous beam · pulses", beam: true, beamOn: 48, beamOff: 34 },
+  plasma: { name: "Plasma Laser Beam", cost: 2500, dmg: 5, delay: 0,   maxLvl: 20, upCost: 100, desc: "5 dmg · continuous beam · pulses", beam: true, beamOn: 48, beamOff: 34 },
 };
 
 export const weaponDmg = (id, lvl) => WEAPONS[id].dmg + Math.floor(lvl / 5);
