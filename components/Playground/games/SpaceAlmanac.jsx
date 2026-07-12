@@ -54,11 +54,11 @@ function Sprite({ id, kind, size = 44 }) {
 
     if (kind === "enemy") {
       const E = ENEMIES[id];
-      const scale = Math.min(1, (cvs.width - 16) / (E.w + (E.wings ? E.w * 1.1 : 12)));
+      const scale = Math.min(1, (cvs.width - 16) / (E.w + (E.wings ? E.w * 0.6 : 12)));
       const w = E.w * scale, h = E.h * scale;
 
       if (E.wings) {
-        const ww = w * 0.55, wh = h * 0.4;
+        const ww = w * 0.28, wh = h * 0.32;
         ctx.fillStyle = E.color;
         ctx.fillRect(cx - w / 2 - ww, cy - wh / 2, ww, wh);
         ctx.fillRect(cx + w / 2, cy - wh / 2, ww, wh);

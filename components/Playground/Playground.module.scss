@@ -695,6 +695,37 @@
 }
 
 
+.folderBest {
+  background: rgba(180, 107, 255, 0.12);
+  border: 2px solid rgba(180, 107, 255, 0.5);
+}
+
+.folderBest:hover {
+  background: rgba(180, 107, 255, 0.22);
+}
+
+.bestTag {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: #111;
+  background: var(--accent);
+  border: 2px solid #111;
+  border-radius: 6px;
+  padding: 0.06rem 0.3rem;
+  transform: rotate(8deg);
+  animation: bestPop 1.4s ease-in-out infinite;
+}
+
+@keyframes bestPop {
+  0%, 100% { transform: rotate(8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.12); }
+}
+
+
 .bossTag {
   font-family: var(--font-geist), sans-serif;
   font-weight: 800;

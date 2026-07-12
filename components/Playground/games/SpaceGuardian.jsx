@@ -410,14 +410,102 @@ export default function SpaceGuardian({ onGameOver }) {
       s.blasts = s.blasts.filter((bl) => bl.alpha > 0 && bl.r < bl.max + 20);
 
       // enemy bullets vs player
-      s.ebullets = s.ebullets.filter((b) => {
-        if (Math.abs(b.x - px) < 18 && Math.abs(b.y - py) < 14) {
-          if (b.snare) { s.snaredUntil = s.t + 120; s.snareX = s.x; }
-          else if (b.emp) { s.empUntil = s.t + 120; hurt(b.dmg); }
-          else hurt(b.dmg);
-          return false;
+      // enemy bullets
+      s.ebullets.forEach((b) => {
+        const len = b.long || 24;
+        const flick = 0.7 + Math.sin(s.t * 0.5 + b.x) * 0.3;
+
+        if (b.snare) {
+          const wob = Math.sin(s.t * 0.5) * 2;
+          ctx.fillStyle = "rgba(0, 224, 198, 0.22)";
+          ctx.fillRect(b.x - 9, b.y, 18, len);
+          ctx.fillStyle = "#00e0c6";
+          ctx.fillRect(b.x - 4 + wob, b.y, 8, len);
+          ctx.fillStyle = "#eafffb";
+          ctx.fillRect(b.x - 1, b.y + 2, 2, len - 4);
+          ctx.strokeStyle = `rgba(0,224,198,${flick})`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(b.x, b.y + len / 2, 9 + Math.sin(s.t * 0.4) * 2, 0, Math.PI * 2); ctx.stroke();
+        } else if (b.hunter) {
+          // sharp teal dart with fins
+          ctx.fillStyle = "rgba(0, 224, 198, 0.3)";
+          ctx.fillRect(b.x - 5, b.y, 10, len);
+          ctx.fillStyle = "#00e0c6";
+          ctx.fillRect(b.x - 2, b.y, 4, len);
+          ctx.fillRect(b.x - 5, b.y + len - 7, 3, 7);
+          ctx.fillRect(b.x + 2, b.y + len - 7, 3, 7);
+          ctx.fillStyle = "#eafffb";
+          ctx.fillRect(b.x - 1, b.y, 2, len * 0.45);
+        } else if (b.emp) {
+          const age = s.t - (b.born || 0);
+          const pulse = 4 + Math.sin(age * 0.35) * 2;
+          ctx.strokeStyle = `rgba(59, 184, 229, ${0.3 + Math.sin(age * 0.35) * 0.25})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 10 + pulse, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 5 + pulse * 0.4, 0, Math.PI * 2); ctx.stroke();
+          ctx.fillStyle = "rgba(59, 184, 229, 0.45)";
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 7, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#bde9fb";
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 3.5, 0, Math.PI * 2); ctx.fill();
+          // crackle
+          ctx.strokeStyle = `rgba(255,255,255,${flick})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(b.x - 8, b.y + 2); ctx.lineTo(b.x - 3, b.y + 7); ctx.lineTo(b.x - 6, b.y + 11);
+          ctx.stroke();
+        } else if (b.laser) {
+          // Kingship laser lance
+          ctx.fillStyle = `rgba(255,107,179,${0.3 * flick})`;
+          ctx.fillRect(b.x - 6, b.y, 12, len);
+          ctx.fillStyle = b.color;
+          ctx.fillRect(b.x - 3, b.y, 6, len);
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(b.x - 1.5, b.y, 3, len);
+          ctx.fillStyle = `rgba(255,255,255,${flick})`;
+          ctx.fillRect(b.x - 4, b.y + len - 4, 8, 4);
+        } else if (b.color === "#c9cde6") {
+          // Dark Resistance slugs: metallic tracer
+          ctx.fillStyle = "rgba(201,205,230,0.3)";
+          ctx.fillRect(b.x - 4, b.y, 8, len);
+          ctx.fillStyle = "#c9cde6";
+          ctx.fillRect(b.x - 2, b.y, 4, len);
+          ctx.fillStyle = "#ff8a3d";
+          ctx.fillRect(b.x - 1, b.y + len - 5, 2, 5);
+        } else if (b.color === "#e14b4a") {
+          // Galaxy Fighter plasma: hot bolt with a fading tail
+          ctx.fillStyle = `rgba(225,75,74,${0.28 * flick})`;
+          ctx.fillRect(b.x - 6, b.y, 12, len + 6);
+          ctx.fillStyle = "#e14b4a";
+          ctx.fillRect(b.x - 3, b.y, 6, len);
+          ctx.fillStyle = "#ffd0c2";
+          ctx.fillRect(b.x - 1.5, b.y, 3, len * 0.5);
+        } else if (b.color === "#ff6bb3") {
+          // Mothership beam-shot
+          ctx.fillStyle = "rgba(255,107,179,0.3)";
+          ctx.fillRect(b.x - 5, b.y, 10, len);
+          ctx.fillStyle = "#ff6bb3";
+          ctx.fillRect(b.x - 2.5, b.y, 5, len);
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(b.x - 1, b.y, 2, len);
+        } else if (b.color === "#ff8a3d") {
+          // Gunner: short, hot, rapid
+          ctx.fillStyle = "rgba(255,138,61,0.35)";
+          ctx.fillRect(b.x - 3.5, b.y, 7, len);
+          ctx.fillStyle = "#ff8a3d";
+          ctx.fillRect(b.x - 2, b.y, 4, len);
+          ctx.fillStyle = "#ffe0c2";
+          ctx.fillRect(b.x - 1, b.y, 2, 5);
+        } else {
+          // Fighter / Hummingbird: clean tracer with a spark
+          ctx.fillStyle = `${b.color}44`;
+          ctx.fillRect(b.x - 4, b.y, 8, len);
+          ctx.fillStyle = b.color;
+          ctx.fillRect(b.x - 2, b.y, 4, len);
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.fillRect(b.x - 1, b.y, 2, Math.max(4, len * 0.3));
+          ctx.fillStyle = `rgba(255,255,255,${flick * 0.5})`;
+          ctx.fillRect(b.x - 1, b.y + len - 3, 2, 3);
         }
-        return true;
       });
 
       s.enemies = s.enemies.filter((e) => {
@@ -567,15 +655,15 @@ export default function SpaceGuardian({ onGameOver }) {
       s.enemies.forEach((e) => {
         const E = ENEMIES[e.type];
 
-        // large wings
+        // wings, modest span
         if (E.wings) {
           ctx.fillStyle = E.color;
-          const wingW = E.w * 0.55, wingH = E.h * 0.4;
+          const wingW = E.w * 0.28, wingH = E.h * 0.32;
           ctx.fillRect(e.x - E.w / 2 - wingW, e.y - wingH / 2, wingW, wingH);
           ctx.fillRect(e.x + E.w / 2, e.y - wingH / 2, wingW, wingH);
           ctx.fillStyle = "rgba(0,0,0,0.25)";
-          ctx.fillRect(e.x - E.w / 2 - wingW, e.y + wingH / 2 - 4, wingW, 4);
-          ctx.fillRect(e.x + E.w / 2, e.y + wingH / 2 - 4, wingW, 4);
+          ctx.fillRect(e.x - E.w / 2 - wingW, e.y + wingH / 2 - 3, wingW, 3);
+          ctx.fillRect(e.x + E.w / 2, e.y + wingH / 2 - 3, wingW, 3);
         }
 
         ctx.fillStyle = E.color;

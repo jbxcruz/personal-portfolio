@@ -138,7 +138,30 @@ function BeaGame({ onGameOver }) {
   );
 }
 
-function PixelFolder({ dim }) {
+function PixelFolder({ dim, best }) {
+  if (best) {
+    return (
+      <svg viewBox="0 0 60 48" shapeRendering="crispEdges" className={styles.folderSvg} aria-hidden="true">
+        <rect x="2" y="6" width="22" height="6" fill="#111" />
+        <rect x="2" y="12" width="56" height="34" fill="#111" />
+        <rect x="5" y="9" width="17" height="6" fill="#b46bff" />
+        <rect x="5" y="15" width="50" height="28" fill="#b46bff" />
+        <rect x="5" y="15" width="50" height="7" fill="#8f4fd4" />
+        {/* tiny stars */}
+        <rect x="12" y="26" width="2" height="2" fill="#fff" />
+        <rect x="22" y="33" width="2" height="2" fill="#fff" />
+        <rect x="44" y="24" width="2" height="2" fill="#fff" />
+        {/* little ship */}
+        <rect x="26" y="29" width="9" height="6" fill="#3BB8E5" />
+        <rect x="24" y="31" width="2" height="3" fill="#3BB8E5" />
+        <rect x="35" y="31" width="2" height="3" fill="#3BB8E5" />
+        <rect x="29" y="26" width="3" height="3" fill="#3BB8E5" />
+        <rect x="27" y="31" width="2" height="2" fill="#111" />
+        <rect x="32" y="31" width="2" height="2" fill="#111" />
+        <rect x="29" y="35" width="3" height="3" fill="#ff8a3d" />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 60 48" shapeRendering="crispEdges" className={styles.folderSvg} aria-hidden="true" style={dim ? { opacity: 0.45 } : undefined}>
       <rect x="2" y="6" width="22" height="6" fill="#111" />
@@ -156,8 +179,7 @@ const GAMES = [
   { id: "reaction", name: "Jebby's Reaction Test", cat: "Jebby's Fun Games", desc: "Click as soon as Jebby changes color.", diffs: null, unit: "ms avg", lowerBetter: true, ready: true },
   { id: "taptap", name: "Tap Tap Jebby", cat: "Jebby's Fun Games", desc: "Tap to fly, dodge obstacles, and see how far you can go.", diffs: ["Easy", "Normal", "Hard"], unit: "pts", lowerBetter: false, ready: true },
   { id: "mines", name: "Minesweeper Jebby", cat: "Jebby's Fun Games", desc: "Clear every tile without triggering hidden mines.", diffs: ["Easy", "Normal", "Hard"], unit: "s", lowerBetter: true, ready: true },
-  { id: "space", name: "Jebby the Space Guardian", cat: "Jebby's Fun Games", desc: "Shoot down space enemies, earn points, upgrade your guns.", diffs: null, unit: "pts", lowerBetter: false, ready: true },
-  { id: "memory", name: "How Good is Jebby's Memory", cat: "Jebby's Fun Games", desc: "Flip matching pairs.", diffs: ["Easy", "Normal", "Hard"], unit: "moves", lowerBetter: true, ready: true },
+  { id: "space", name: "Jebby the Space Guardian", cat: "Jebby's Fun Games", desc: "Shoot down space enemies, earn points, upgrade your guns.", diffs: null, unit: "pts", lowerBetter: false, ready: true, best: true },  { id: "memory", name: "How Good is Jebby's Memory", cat: "Jebby's Fun Games", desc: "Flip matching pairs.", diffs: ["Easy", "Normal", "Hard"], unit: "moves", lowerBetter: true, ready: true },
   { id: "wise", name: "Jebby the Wise", cat: "Other Fun Games", desc: "Tap for a random quote, wise words, or a bit of nonsense.", diffs: null, unit: null, lowerBetter: false, ready: true },
   { id: "pixel", name: "Pixel Art", cat: "Other Fun Games", desc: "Create colorful pixel masterpieces, one block at a time.", diffs: null, unit: null, lowerBetter: false, ready: true },
   { id: "bea", name: "Don't Make Bea Angry", cat: "Other Fun Games", desc: "How many clicks until Bea snaps?", diffs: null, unit: "pokes", lowerBetter: false, ready: true },
@@ -203,7 +225,7 @@ export default function Playground() {
                       {GAMES.filter((g) => g.cat === cat).map((g) => (
                         <button
                           key={g.id}
-                          className={`${styles.folderBtn} ${!g.ready ? styles.folderSoon : ""}`}
+                          className={`${styles.folderBtn} ${!g.ready ? styles.folderSoon : ""} ${g.best ? styles.folderBest : ""}`}
                           onClick={() => {
                             if (!g.ready) return;
                             setGameId(g.id);
@@ -211,8 +233,9 @@ export default function Playground() {
                             setScreen("gamemenu");
                           }}
                         >
-                          <PixelFolder dim={!g.ready} />
+                          <PixelFolder dim={!g.ready} best={g.best} />
                           <span className={styles.folderName}>{g.name}</span>
+                          {g.best && <span className={styles.bestTag}>BEST!</span>}
                           {!g.ready && <span className={styles.soon}>SOON</span>}
                         </button>
                       ))}
