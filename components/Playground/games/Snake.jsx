@@ -9,6 +9,7 @@ const SPEEDS = { Easy: 170, Normal: 115, Hard: 75 };
 export default function Snake({ difficulty, onGameOver }) {
   const canvasRef = useRef(null);
   const [score, setScore] = useState(0);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
     const cvs = canvasRef.current;
@@ -22,6 +23,7 @@ export default function Snake({ difficulty, onGameOver }) {
       food: { x: 12, y: 8 },
       score: 0,
       dead: false,
+      started: false,
     };
 
     const placeFood = () => {
@@ -33,6 +35,10 @@ export default function Snake({ difficulty, onGameOver }) {
     const setDir = (x, y) => {
       if (x === -s.dir.x && y === -s.dir.y) return;
       s.nextDir = { x, y };
+      if (!s.started) {
+        s.started = true;
+        setStarted(true);
+      }
     };
 
     const onKey = (e) => {
@@ -61,7 +67,7 @@ export default function Snake({ difficulty, onGameOver }) {
     };
 
     const tick = () => {
-      if (s.dead) return;
+      if (s.dead || !s.started) return; // waits for the player's first move
       s.dir = s.nextDir;
       const head = { x: s.snake[0].x + s.dir.x, y: s.snake[0].y + s.dir.y };
       if (
@@ -96,9 +102,13 @@ export default function Snake({ difficulty, onGameOver }) {
   const dpad = (x, y) => canvasRef.current?.dpad?.(x, y);
 
   return (
-    <div className={styles.gameArea}>
-      <div className={styles.hud}>SCORE {score} · WASD to move</div>
-      <canvas ref={canvasRef} width={340} height={340} className={styles.canvas} />
+    <div className={styles.gameRow}>
+      <div className={styles.sidePanel}>
+        <span className={styles.sideLabel}>SCORE</span>
+        <span className={styles.sideValue}>{score}</span>
+        <span className={styles.sideHint}>{started ? "WASD to steer" : "Press WASD to start"}</span>
+      </div>
+      <canvas ref={canvasRef} width={320} height={320} className={styles.canvas} />
       <div className={styles.dpad}>
         <button onClick={() => dpad(0, -1)} aria-label="Up">▲</button>
         <div>

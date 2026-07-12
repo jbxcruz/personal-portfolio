@@ -19,3 +19,26 @@ export function saveScore(gameId, diff, score, lowerIsBetter = false) {
     return [];
   }
 }
+
+const PROFILE_KEY = "jebby-arcade:space:profile";
+
+export function loadProfile() {
+  try {
+    return (
+      JSON.parse(localStorage.getItem(PROFILE_KEY)) || {
+        points: 0,
+        owned: { basic: { lvl: 0 } },
+        equipped: "basic",
+        acc: {},
+      }
+    );
+  } catch {
+    return { points: 0, owned: { basic: { lvl: 0 } }, equipped: "basic", acc: {} };
+  }
+}
+
+export function saveProfile(p) {
+  try {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+  } catch {}
+}

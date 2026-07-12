@@ -7,11 +7,14 @@ import { useNav } from "@/components/SectionNav/SectionNav";
 import { loadScores, saveScore } from "./arcade";
 import Snake from "./games/Snake";
 import Memory from "./games/Memory";
-
-
+import TapTap from "./games/TapTap";
+import Mines from "./games/Mines";
+import PixelArt from "./games/PixelArt";
+import SpaceGuardian from "./games/SpaceGuardian";
+import { Shop, Arsenals } from "./games/SpaceShop";
+import SpaceAlmanac from "./games/SpaceAlmanac";
 
 const QUOTES = [
-  // Existing
   "Ship it, then fix it.",
   "A bug is just a feature you haven't met.",
   "Pixels are forever.",
@@ -20,108 +23,7 @@ const QUOTES = [
   "The best portfolio is a finished one.",
   "Coffee first, semicolons later.",
   "You miss 100% of the merges you don't commit.",
-
-
-    // Totally Not Verified
-  "Fun fact: Reading this increases your luck by 0.3%.",
-  "Your next click will definitely be different.",
-  "Jebby personally approved this message.",
-  "Scientists are still investigating why this quote exists.",
-  "Bea has counted your clicks.",
-  "This fact was generated with 12% confidence.",
-  "The moon has not confirmed this information.",
-  "Congratulations! You discovered another useless fact.",
-  "Warning: Excessive wisdom may cause smiling.",
-  "Every click makes Jebby 0.0001% wiser.",
-  "This quote was fact-checked by absolutely nobody.",
-  "Your curiosity has been logged.",
-  "Achievement unlocked: Professional Quote Reader.",
-  "This message is powered by coffee.",
-  "The probability of seeing this exact quote again is... non-zero.",
-
-
-  // Motivational
-  "Progress beats perfection.",
-  "Start before you're ready.",
-  "Small steps become big results.",
-  "Consistency is a superpower.",
-  "Every expert was once a beginner.",
-  "Create more than you consume.",
-  "Done is better than perfect.",
-  "Curiosity is your greatest tool.",
-  "Keep building. Someone will notice.",
-  "Your next project is your best teacher.",
-  "Make things that make you smile.",
-  "Growth happens one commit at a time.",
-
-  // Design & Development
-  "Whitespace is a feature.",
-  "Good UX is invisible.",
-  "If it feels simple, someone worked hard.",
-  "Every pixel has a purpose.",
-  "Animations should delight, not distract.",
-  "Code for humans first, computers second.",
-  "Debugging is detective work.",
-  "Version control remembers what you forget.",
-  "Documentation is a love letter to your future self.",
-  "Responsive means everyone is welcome.",
-
-  // Funny
-  "It worked on my machine.",
-  "99 little bugs in the code...",
-  "The CSS knows what it did.",
-  "There is no place like localhost.",
-  "Have you tried turning it off and on again?",
-  "404: Motivation not found.",
-  "Git blamed someone else.",
-  "This quote was deployed to production.",
-  "Rubber ducks deserve raises.",
-  "The loading screen is thinking very hard.",
-  "Your keyboard believes in you.",
-  "The compiler saw everything.",
-  "Your code has trust issues.",
-  "The bug fears being observed.",
-  "One more tutorial won't hurt... probably.",
-  "Sleep is just low-power debugging.",
-  "The deadline is approaching at runtime.",
-  "Congratulations. You clicked a quote.",
-  "May your commits be ever in your favor.",
-  "Manifesting 1-year AI subscription. Results may vary.",
-  "Terms and conditions may apply.",
-
-  // Random & Silly
-  "A pigeon is watching you code.",
-  "Somewhere, a potato believes in you.",
-  "Your next snack is closer than your deadline.",
-  "The moon approves this decision.",
-  "Today's luck: surprisingly acceptable.",
-  "Touch grass. Then push to Git.",
-  "You have unlocked absolutely nothing.",
-  "The universe rolled a natural 20.",
-  "A raccoon reviewed your code. It nodded.",
-  "Your future self says thanks.",
-  "Even the loading spinner needs a break.",
-  "Be the reason someone smiles today.",
-  "You're doing better than you think.",
-  "Remember to hydrate.",
-  "Don't forget to stretch.",
-
-  // Jebby-exclusive
-  "Jebby says: You can do it.",
-  "Jebby says: Keep going.",
-  "Jebby predicts a successful deploy.",
-  "The Wise Jebby has spoken.",
-  "Even Jebby forgets semicolons.",
-  "Trust Jebby.... Or don't.",
-  "Jebby believes in side projects.",
-  "The answer is... maybe.",
-  "Jebby is watching...",
-  "Jebby thinks you should take a break.",
-  "Did you know that Jebby has a girlfriend? She is Bea. Don't make her angry.",
-  "I was a computer once, but I got a virus. Now I'm a Jebby.",
 ];
-
-
 
 function ReactionGame({ onGameOver }) {
   const [phase, setPhase] = useState("wait");
@@ -208,7 +110,6 @@ function BeaGame({ onGameOver }) {
   const [clicks, setClicks] = useState(0);
   const limitRef = useRef(30 + Math.floor(Math.random() * 51)); // snaps at 30-80
   const anger = Math.min(1, clicks / limitRef.current);
-  // purple (180,107,255) -> red (225,75,74), straight channel interpolation
   const r = Math.round(180 + (225 - 180) * anger);
   const g = Math.round(107 + (75 - 107) * anger);
   const b = Math.round(255 + (74 - 255) * anger);
@@ -253,10 +154,12 @@ function PixelFolder({ dim }) {
 const GAMES = [
   { id: "snake", name: "Snake Jebby", cat: "Jebby's Fun Games", desc: "Grow your snake, avoid collisions, and beat your high score.", diffs: ["Easy", "Normal", "Hard"], unit: "pts", lowerBetter: false, ready: true },
   { id: "reaction", name: "Jebby's Reaction Test", cat: "Jebby's Fun Games", desc: "Click as soon as Jebby changes color.", diffs: null, unit: "ms avg", lowerBetter: true, ready: true },
-  { id: "dodge", name: "Dodge", cat: "Jebby's Fun Games", desc: "Survive falling blocks for as long as possible.", diffs: ["Easy", "Normal", "Hard"], unit: "s", lowerBetter: false, ready: false },
+  { id: "taptap", name: "Tap Tap Jebby", cat: "Jebby's Fun Games", desc: "Tap to fly, dodge obstacles, and see how far you can go.", diffs: ["Easy", "Normal", "Hard"], unit: "pts", lowerBetter: false, ready: true },
+  { id: "mines", name: "Minesweeper Jebby", cat: "Jebby's Fun Games", desc: "Clear every tile without triggering hidden mines.", diffs: ["Easy", "Normal", "Hard"], unit: "s", lowerBetter: true, ready: true },
+  { id: "space", name: "Jebby the Space Guardian", cat: "Jebby's Fun Games", desc: "Shoot down space enemies, earn points, upgrade your guns.", diffs: null, unit: "pts", lowerBetter: false, ready: true },
   { id: "memory", name: "How Good is Jebby's Memory", cat: "Jebby's Fun Games", desc: "Flip matching pairs.", diffs: ["Easy", "Normal", "Hard"], unit: "moves", lowerBetter: true, ready: true },
   { id: "wise", name: "Jebby the Wise", cat: "Other Fun Games", desc: "Tap for a random quote, wise words, or a bit of nonsense.", diffs: null, unit: null, lowerBetter: false, ready: true },
-  { id: "pixel", name: "Pixel Art", cat: "Other Fun Games", desc: "Create colorful pixel masterpieces, one block at a time.", diffs: null, unit: null, lowerBetter: false, ready: false },
+  { id: "pixel", name: "Pixel Art", cat: "Other Fun Games", desc: "Create colorful pixel masterpieces, one block at a time.", diffs: null, unit: null, lowerBetter: false, ready: true },
   { id: "bea", name: "Don't Make Bea Angry", cat: "Other Fun Games", desc: "How many clicks until Bea snaps?", diffs: null, unit: "pokes", lowerBetter: false, ready: true },
 ];
 
@@ -266,6 +169,7 @@ export default function Playground() {
   const [screen, setScreen] = useState("menu");
   const [diff, setDiff] = useState("Normal");
   const [lastScore, setLastScore] = useState(null);
+  const [confirmReset, setConfirmReset] = useState(false);
   const game = GAMES.find((g) => g.id === gameId);
 
   useEffect(() => {
@@ -276,7 +180,7 @@ export default function Playground() {
 
   const gameOver = (score) => {
     setLastScore(score);
-    if (game?.unit) saveScore(game.id, game.diffs ? diff : "default", score, game.lowerBetter);
+    if (score != null && game?.unit) saveScore(game.id, game.diffs ? diff : "default", score, game.lowerBetter);
     setScreen("gameover");
   };
 
@@ -331,9 +235,47 @@ export default function Playground() {
                 )}
                 <div className={styles.menuBtns}>
                   <button className={styles.menuBtn} onClick={() => setScreen("playing")}>▶ New Game</button>
+                  {game.id === "space" && (
+                    <>
+                      <button className={styles.menuBtn} onClick={() => setScreen("shop")}>◆ Shop</button>
+                      <button className={styles.menuBtn} onClick={() => setScreen("arsenals")}>⚙ Arsenals</button>
+                      <button className={styles.menuBtn} onClick={() => setScreen("almanac")}>📖 Almanac</button>
+                    </>
+                  )}
                   {game.unit && <button className={styles.menuBtn} onClick={() => setScreen("scores")}>★ Scoreboard</button>}
                   <button className={styles.menuBtn} onClick={() => { setGameId(null); setScreen("menu"); }}>✕ Exit</button>
                 </div>
+
+                {game.id === "space" && (
+                  <div className={styles.resetCorner}>
+                    {!confirmReset ? (
+                      <button className={styles.resetBtn} onClick={() => setConfirmReset(true)}>⟲ Reset Progress</button>
+                    ) : (
+                      <div className={styles.resetConfirm}>
+                        <span>Erase all points, guns, and scores?</span>
+                        <div className={styles.resetRow}>
+                          <button
+                            className={styles.resetYes}
+                            onClick={() => {
+                              try {
+                                localStorage.removeItem("jebby-arcade:space:profile");
+                                Object.keys(localStorage)
+                                  .filter((k) => k.startsWith("jebby-arcade:space:"))
+                                  .forEach((k) => localStorage.removeItem(k));
+                              } catch {}
+                              setConfirmReset(false);
+                              setGameId(null);
+                              setScreen("menu");
+                            }}
+                          >
+                            Yes, reset
+                          </button>
+                          <button className={styles.resetNo} onClick={() => setConfirmReset(false)}>Cancel</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </motion.div>
             )}
 
@@ -341,10 +283,38 @@ export default function Playground() {
               <motion.div key="play" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 {game.id === "snake" && <Snake difficulty={diff} onGameOver={gameOver} />}
                 {game.id === "reaction" && <ReactionGame onGameOver={gameOver} />}
+                {game.id === "taptap" && <TapTap difficulty={diff} onGameOver={gameOver} />}
+                {game.id === "mines" && <Mines difficulty={diff} onGameOver={gameOver} />}
+                {game.id === "space" && <SpaceGuardian onGameOver={gameOver} />}
                 {game.id === "memory" && <Memory difficulty={diff} onGameOver={gameOver} />}
                 {game.id === "wise" && <WiseGame />}
+                {game.id === "pixel" && <PixelArt />}
                 {game.id === "bea" && <BeaGame onGameOver={gameOver} />}
-                <button className={styles.quitBtn} onClick={() => setScreen("gamemenu")}>Quit to menu</button>
+                <button className={styles.quitBtn} onClick={() => setScreen("gamemenu")}>← Back to menu</button>
+              </motion.div>
+            )}
+
+            {screen === "shop" && game && (
+              <motion.div key="shop" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                <h3 className={styles.gameTitle}>Shop</h3>
+                <Shop />
+                <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Back</button>
+              </motion.div>
+            )}
+
+            {screen === "arsenals" && game && (
+              <motion.div key="arsenals" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                <h3 className={styles.gameTitle}>Arsenals</h3>
+                <Arsenals />
+                <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Back</button>
+              </motion.div>
+            )}
+
+            {screen === "almanac" && game && (
+              <motion.div key="almanac" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                <h3 className={styles.gameTitle}>Almanac</h3>
+                <SpaceAlmanac />
+                <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Back</button>
               </motion.div>
             )}
 
@@ -368,10 +338,10 @@ export default function Playground() {
             {screen === "gameover" && game && (
               <motion.div key="over" className={styles.inner} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
                 <h3 className={styles.gameTitle}>Game Over</h3>
-                <span className={styles.finalScore}>{lastScore} {game.unit}</span>
+                <span className={styles.finalScore}>{lastScore == null ? "BOOM!" : `${lastScore} ${game.unit}`}</span>
                 <div className={styles.menuBtns}>
                   <button className={styles.menuBtn} onClick={() => setScreen("playing")}>↻ Play Again</button>
-                  <button className={styles.menuBtn} onClick={() => setScreen("scores")}>★ Scoreboard</button>
+                  {game.unit && <button className={styles.menuBtn} onClick={() => setScreen("scores")}>★ Scoreboard</button>}
                   <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Menu</button>
                 </div>
               </motion.div>
