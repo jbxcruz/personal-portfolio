@@ -24,7 +24,7 @@ export const ENEMIES = {
   galaxy:      { name: "Galaxy Fighter", hp: 3, pts: 3, speed: 0.9,  dmg: 5,  w: 30, h: 24, color: "#e14b4a", fireChance: 0.006, bulletSpeed: 3.2, desc: "Plasma cannons. Hits brutally hard." },
   crusader:    { name: "Galaxy Crusader", hp: 5, pts: 5, speed: 0.45, dmg: 3, w: 44, h: 32, color: "#b46bff", fireChance: 0.007, bulletSpeed: 2.2, wings: true, desc: "Broad-winged tank. Splits into 3 Space Fighters when destroyed." },
   timekeeper:  { name: "Time Keeper", hp: 4, pts: 30, speed: 0.7, dmg: 2, w: 30, h: 26, color: "#3BB8E5", fireChance: 0.014, bulletSpeed: 2.4, emp: true, desc: "EMP blasts, fired often. A hit slows your fire rate and bullets for 2s." },
-  hunter:      { name: "Space Hunter", hp: 4, pts: 35, speed: 0.75, dmg: 1, w: 30, h: 24, color: "#00e0c6", fireChance: 0.012, bulletSpeed: 3.4, hunter: true, hoverY: 120, desc: "Stalks your lane from above. Marks you for 3s, fires a Snare, then hunts you while you're frozen." },
+  hunter:      { name: "Space Hunter", hp: 4, pts: 35, speed: 0.75, dmg: 1, w: 30, h: 24, color: "#00e0c6", fireChance: 0.012, bulletSpeed: 3.4, hunter: true, hoverY: 120, desc: "Stalks your lane from above. Marks you for 2s, fires a Snare, then hunts you while you're frozen." },
   darkres:     { name: "Dark Resistance", hp: 8, pts: 35, speed: 0.5, dmg: 1, w: 40, h: 30, color: "#6b6f8a", fireChance: 0.016, bulletSpeed: 3.2, barrels: 3, wings: true, redEyes: true, desc: "Heavy winged hull, 3 sub-machine barrels firing in bursts." },
   bounty:      { name: "Space Bounty", hp: 15, pts: 50, speed: 0.6, dmg: 2, w: 40, h: 34, color: "#cdd6ea", fireChance: 0, bulletSpeed: 0, parkY: 90, desc: "Never moves once parked, never fires. Pure bounty." },
   mothership:  { name: "Mothership", hp: 10, pts: 35, speed: 0.35, dmg: 10, w: 56, h: 36, color: "#ff6bb3", fireChance: 0.009, bulletSpeed: 4.5, crown: "#ffd21e", desc: "Crowned laser cruiser. Splits into 2 Galaxy Crusaders when destroyed." },
@@ -302,7 +302,33 @@ export default function SpaceGuardian({ onGameOver }) {
       });
       s.bullets = s.bullets.filter((b) => b.y > -20);
       s.ebullets.forEach((b) => { b.y += b.v; });
-      s.ebullets = s.ebullets.filter((b) => b.y < H + 20);
+      s.ebullets = s.ebullets.filter((b) => {
+      const len = b.long || 24;
+
+        // Did the bullet hit the player?
+        if (
+          Math.abs(b.x - px) < 18 &&
+          b.y + len >= py - 10 &&
+          b.y <= py + 10
+        ) {
+          if (b.snare) {
+            // Freeze player for 3 seconds
+            s.snaredUntil = s.t + 120;
+            s.snareX = s.x;
+          } else if (b.emp) {
+            // EMP for 2 seconds
+            s.empUntil = s.t + 120;
+            hurt(b.dmg);
+          } else {
+            // Normal enemy bullet
+            hurt(b.dmg);
+          }
+
+          return false; // remove bullet
+        }
+
+        return b.y < H + 20;
+      });
 
       s.smoke.forEach((p) => { p.r += 0.35; p.a -= 0.022; });
       s.smoke = s.smoke.filter((p) => p.a > 0);
