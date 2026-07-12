@@ -26,10 +26,7 @@ export function loadProfile() {
   try {
     return (
       JSON.parse(localStorage.getItem(PROFILE_KEY)) || {
-        points: 0,
-        owned: { basic: { lvl: 0 } },
-        equipped: "basic",
-        acc: {},
+        points: 0, owned: { basic: { lvl: 0 } }, equipped: "basic", acc: {}, kills: {},
       }
     );
   } catch {

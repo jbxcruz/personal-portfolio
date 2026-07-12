@@ -2,8 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import styles from "../Playground.module.scss";
-import { WEAPONS, ENEMIES, weaponDmg } from "./SpaceGuardian";
+import { WEAPONS, ENEMIES, BUFFS, weaponDmg } from "./SpaceGuardian";
 import { ACCESSORIES } from "./SpaceShop";
+import { loadProfile } from "../arcade";
+
+const kills = loadProfile().kills || {};
 
 const LORE = {
   fighter: "The rank and file of the void. Cheap, plentiful, and always first through the door.",
@@ -14,9 +17,12 @@ const LORE = {
   timekeeper: "It doesn't want to kill you. It wants to slow you down until something else does.",
   hunter: "Patient, cold, methodical. It stalks your lane from above and never once looks away.",
   darkres: "Salvaged hull, stolen barrels, red eyes in the dark. Cheap engineering, expensive to fight.",
+  huntress: "She does not dodge, she does not flinch, and she does not miss. Six seconds of stillness is her whole plan, and it is enough.",
   bounty: "It drifts in, cuts its engines, and dares you to spend the ammo. Worth every round.",
   mothership: "A crowned cruiser, and rarely alone for long. Killing it is an achievement. Surviving what it drops is another.",
+  queen: "The King's Queen, and the more dangerous of the pair. She does not rush. She charges, and if you cannot break her in ten seconds, she rewrites the last fifteen against you.",
   kingship: "The crown itself. It does not chase you, it does not hurry, and it does not come alone. When it finally breaks, the wreck is still trying to kill you.",
+  fleet: "It does not raid. It arrives, and a world stops existing. Three tricks, five thousand lives, and an escort waiting inside the wreck.",
 };
 
 const GUN_LORE = {
@@ -28,10 +34,11 @@ const GUN_LORE = {
   rocket: "One warhead, one long pause, one very large hole. Mind the smoke.",
   laser: "Focused light, punched straight through hull plating.",
   plasma: "Not a bullet. A standing column of plasma that eats anything it touches.",
+  hornet: "Half machine gun, half missile swarm. Each round picks a victim and chases it down. Loud, fast, and unfair.",
 };
 
 const ACC_LORE = {
-  armor: "Plating bolted over the hull. Every hit lands softer, but nothing lands for free.",
+  holoshield: "A single skin of hard light. It takes one hit for you, then it's gone.",
   health: "More heart, literally. Each level is one more mistake you get to survive.",
   orb: "A shard of something old, circling Jebby. It doesn't ask permission before it bites.",
   twinorb: "Two shards now, opposite each other. The ring around your ship becomes a threat.",
@@ -41,6 +48,15 @@ const ACC_LORE = {
   homing: "Fire and forget. It picks a target, and it does not lose interest.",
   twinhoming: "Two seekers instead of one, launched faster with every tuning.",
   rapidrockets: "The seekers are gone. What's left is twin rockets, fired straight and fired often.",
+  bea: "She flies on your wing and never asks for cover. She doesn't need it.",
+};
+
+const BUFF_LORE = {
+  emp: "Someone's dropped charge, still armed. Grab it and the whole neighborhood stops in its tracks.",
+  rapid: "Ten seconds of pure trigger discipline, abandoned.",
+  heart: "A spare. Take it.",
+  vault: "Somebody's payroll, floating free.",
+  nuke: "Nobody knows who built it. Everybody knows what it does.",
 };
 
 function Sprite({ id, kind, size = 44 }) {
@@ -86,6 +102,14 @@ function Sprite({ id, kind, size = 44 }) {
       const eye = Math.max(3, 4 * scale);
       ctx.fillRect(cx - w * 0.22, cy - h * 0.18, eye, eye);
       ctx.fillRect(cx + w * 0.22 - eye, cy - h * 0.18, eye, eye);
+      if (E.huntress) {
+        ctx.fillStyle = "#c81f3f";
+        ctx.fillRect(cx - w / 2 + 2, cy - h / 2 + 2, w - 4, 5);
+        ctx.fillStyle = "#c81f3f";
+        ctx.fillRect(cx - 5, cy - 2, 10, 5);
+        ctx.fillStyle = "#4ade80";
+        ctx.fillRect(cx + 6, cy - 5, 4, 4);
+      }
     } else if (kind === "gun") {
       const w = WEAPONS[id];
       if (w.beam) {
@@ -112,10 +136,34 @@ function Sprite({ id, kind, size = 44 }) {
         ctx.fillRect(cx - 2, cy - 14, 4, 8);
         ctx.fillRect(cx - 2, cy - 3, 4, 8);
         ctx.fillRect(cx - 2, cy + 8, 4, 8);
+      } else if (w.hornet) {
+        ctx.fillStyle = "#ff8a3d";
+        ctx.fillRect(cx - 2, cy - 12, 4, 12);
+        ctx.fillStyle = "#ffd21e";
+        ctx.fillRect(cx - 1.5, cy - 15, 3, 4);
+        ctx.fillStyle = "rgba(255,255,255,0.7)";
+        ctx.fillRect(cx - 7, cy - 8, 4, 5);
+        ctx.fillRect(cx + 3, cy - 8, 4, 5);
+        ctx.fillStyle = "#ff8a3d";
+        ctx.fillRect(cx - 9, cy + 4, 4, 8);
+        ctx.fillRect(cx + 5, cy + 4, 4, 8);
       } else {
         ctx.fillStyle = "#ffd21e";
         ctx.fillRect(cx - 3, cy - 10, 6, 20);
       }
+
+      } else if (kind === "buff") {
+      const B = BUFFS[id];
+      ctx.strokeStyle = B.color; ctx.lineWidth = 2;
+      ctx.strokeRect(cx - 13, cy - 13, 26, 26);
+      ctx.fillStyle = `${B.color}33`; ctx.fillRect(cx - 11, cy - 11, 22, 22);
+      ctx.fillStyle = B.color;
+      if (id === "heart") { ctx.fillRect(cx - 7, cy - 6, 5, 5); ctx.fillRect(cx + 2, cy - 6, 5, 5); ctx.fillRect(cx - 7, cy - 1, 14, 5); ctx.fillRect(cx - 3, cy + 4, 6, 4); }
+      else if (id === "vault") { ctx.fillRect(cx - 7, cy - 7, 14, 14); ctx.fillStyle = "#111"; ctx.fillRect(cx - 2, cy - 2, 4, 4); }
+      else if (id === "rapid") { ctx.fillRect(cx - 2, cy - 9, 4, 6); ctx.fillRect(cx - 2, cy - 1, 4, 6); ctx.fillRect(cx - 2, cy + 7, 4, 3); }
+      else if (id === "emp") { ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2); ctx.stroke(); ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill(); }
+      else if (id === "nuke") { ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#111"; [0, 2.09, 4.19].forEach((a) => { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, 9, a, a + 0.7); ctx.fill(); }); }
+    
     } else {
       const orb = (ox, oy = cy) => {
         ctx.fillStyle = "#1c6f95"; ctx.fillRect(ox - 7, oy - 7, 14, 14);
@@ -139,10 +187,21 @@ function Sprite({ id, kind, size = 44 }) {
         ctx.fillRect(cx - 1.5, cy - 14, 3, 5);
         ctx.fillRect(cx - 1.5, cy - 5, 3, 5);
       }
-      else if (id === "armor") {
-        ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 10, cy - 12, 20, 16);
-        ctx.fillStyle = "#9aa0bf"; ctx.fillRect(cx - 7, cy - 9, 14, 10);
-        ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 8, cy + 4, 16, 8);
+      else if (id === "holoshield") {
+        ctx.strokeStyle = "#3BB8E5"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = "rgba(59,184,229,0.25)";
+        ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = "#3BB8E5"; ctx.fillRect(cx - 5, cy - 3, 10, 7);
+      }
+      else if (id === "bea") {
+        ctx.fillStyle = "#ff6bb3";
+        ctx.fillRect(cx - 9, cy - 6, 18, 12);
+        ctx.fillRect(cx - 13, cy - 1, 4, 6);
+        ctx.fillRect(cx + 9, cy - 1, 4, 6);
+        ctx.fillStyle = "#111";
+        ctx.fillRect(cx - 5, cy - 3, 3, 3);
+        ctx.fillRect(cx + 2, cy - 3, 3, 3);
       }
       else if (id === "health") {
         ctx.fillStyle = "#e14b4a";
@@ -156,6 +215,7 @@ function Sprite({ id, kind, size = 44 }) {
         ctx.fillRect(cx + 7, cy - 10, 5, 18);
         ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 12, cy + 8, 24, 4);
       }
+      
       else if (id === "firerate") {
         ctx.fillStyle = "#ff8a3d";
         ctx.fillRect(cx - 3, cy - 14, 5, 8);
@@ -163,7 +223,9 @@ function Sprite({ id, kind, size = 44 }) {
         ctx.fillRect(cx - 3, cy + 8, 5, 6);
         ctx.fillStyle = "#ffd21e"; ctx.fillRect(cx + 6, cy - 10, 3, 20);
       }
+      
     }
+    
   }, [id, kind]);
 
   return <canvas ref={ref} width={size} height={size} className={styles.almSprite} />;
@@ -172,9 +234,10 @@ function Sprite({ id, kind, size = 44 }) {
 export default function SpaceAlmanac({ onExit }) {
   const [tab, setTab] = useState("enemies");
   const [openId, setOpenId] = useState(null);
+  const kills = loadProfile().kills || {};
 
-  const kind = tab === "enemies" ? "enemy" : tab === "guns" ? "gun" : "acc";
-  const source = tab === "enemies" ? ENEMIES : tab === "guns" ? WEAPONS : ACCESSORIES;
+  const kind = tab === "enemies" ? "enemy" : tab === "guns" ? "gun" : tab === "buffs" ? "buff" : "acc";
+  const source = tab === "enemies" ? ENEMIES : tab === "guns" ? WEAPONS : tab === "buffs" ? BUFFS : ACCESSORIES;
   const entries = Object.entries(source);
 
   const switchTab = (t) => { setTab(t); setOpenId(null); };
@@ -186,6 +249,7 @@ export default function SpaceAlmanac({ onExit }) {
         <button className={`${styles.shopTab} ${tab === "enemies" ? styles.shopTabOn : ""}`} onClick={() => switchTab("enemies")}>Enemies</button>
         <button className={`${styles.shopTab} ${tab === "guns" ? styles.shopTabOn : ""}`} onClick={() => switchTab("guns")}>Guns</button>
         <button className={`${styles.shopTab} ${tab === "acc" ? styles.shopTabOn : ""}`} onClick={() => switchTab("acc")}>Accessories</button>
+        <button className={`${styles.shopTab} ${tab === "buffs" ? styles.shopTabOn : ""}`} onClick={() => switchTab("buffs")}>Buffs</button>
       </div>
 
       <div className={styles.almBody}>
@@ -194,11 +258,14 @@ export default function SpaceAlmanac({ onExit }) {
             {entries.map(([id, entry]) => (
               <button
                 key={id}
-                className={`${styles.almTile} ${ENEMIES[id]?.boss ? styles.almBoss : ""}`}
+                className={`${styles.almTile} ${(ENEMIES[id]?.boss || ENEMIES[id]?.queen || ENEMIES[id]?.fleet) ? styles.almBoss : ""}`}
                 onClick={() => setOpenId(id)}
               >
                 <Sprite id={id} kind={kind} size={44} />
                 <span className={styles.almName}>{entry.name}</span>
+                {tab === "enemies" && (
+                  <span className={styles.killTag}>{kills[id] || 0} killed</span>
+                )}
               </button>
             ))}
           </div>
@@ -207,14 +274,16 @@ export default function SpaceAlmanac({ onExit }) {
             <Sprite id={openId} kind={kind} size={72} />
             <h4 className={styles.almTitle}>{item.name}</h4>
             <p className={styles.almLore}>
+              {tab === "buffs" && <span><b>Rarity:</b> {item.rarity}</span>}
               {tab === "enemies" ? LORE[openId] : tab === "guns" ? GUN_LORE[openId] : ACC_LORE[openId]}
             </p>
             <div className={styles.almStatRow}>
               {tab === "enemies" && (
                 <>
-                  <span><b>Lives</b> {item.hp}</span>
+                  <span><b>Lives</b> {item.hp}{item.shield ? ` +${item.shield}🛡` : ""}</span>
                   <span><b>Points</b> {item.pts}</span>
                   <span><b>Damage</b> {item.dmg}</span>
+                  <span><b>Killed</b> {kills[openId] || 0}</span>
                 </>
               )}
               {tab === "guns" && (

@@ -328,10 +328,10 @@ export default function Playground() {
             {screen === "arsenals" && game && (
               <motion.div key="arsenals" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>Arsenals</h3>
-                <Arsenals />
-                <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Back</button>
+                <Arsenals onExit={() => setScreen("gamemenu")} />
               </motion.div>
             )}
+            
 
             {screen === "almanac" && game && (
               <motion.div key="almanac" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
