@@ -695,6 +695,23 @@
 }
 
 
+.bossTag {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 800;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: #e14b4a;
+  border: 2px solid #e14b4a;
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  margin-top: 3px;
+  align-self: flex-start;
+}
+
+.almBoss {
+  border-color: #e14b4a;
+  box-shadow: inset 0 0 0 1px rgba(225, 75, 74, 0.4);
+}
 
 
 
