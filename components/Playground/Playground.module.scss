@@ -525,7 +525,19 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
   width: 100%;
+  align-self: flex-start;
 }
+
+.almDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: min(430px, 94%);
+  text-align: center;
+}
+
+
 
 .almTile {
   display: flex;
@@ -559,25 +571,32 @@
   text-align: center;
 }
 
-.almDetail {
+.almWrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  width: min(430px, 94%);
-  text-align: center;
+  gap: 0.6rem;
+  width: min(560px, 96%);
 }
 
-.almBack {
-  align-self: flex-start;
+/* fixed-height body: switching tabs or opening an entry never moves the buttons */
+.almBody {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.almBackBtn {
   font-family: var(--font-geist), sans-serif;
   font-weight: 700;
-  font-size: 0.68rem;
-  color: #f3f3ee;
-  background: transparent;
-  border: 2px solid rgba(243, 243, 238, 0.5);
-  border-radius: 999px;
-  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  color: #111;
+  background: #f3f3ee;
+  border: 2px solid #111;
+  border-radius: 10px;
+  padding: 0.45rem 1.1rem;
   cursor: pointer;
 }
 

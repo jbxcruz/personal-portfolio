@@ -5,13 +5,13 @@ import styles from "../Playground.module.scss";
 import { loadProfile, saveProfile } from "../arcade";
 
 export const WEAPONS = {
-  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 320, maxLvl: 25, upCost: 10,  desc: "1 dmg · average fire rate" },
-  twin:   { name: "Twin Blasters",     cost: 100,  dmg: 1, delay: 320, maxLvl: 25, upCost: 20,  desc: "1 dmg · average rate · twin barrel", twin: true },
-  smc:    { name: "Space Sub-Machine Cannons", cost: 400, dmg: 1, delay: 720, maxLvl: 30, upCost: 65, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 5 },
-  blaster:{ name: "Blaster Cannons",   cost: 450,  dmg: 3, delay: 600, maxLvl: 20, upCost: 30,  desc: "3 dmg · slow rate · AOE", aoe: 46 },
+  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 300, maxLvl: 25, upCost: 10,  desc: "1 dmg · average fire rate" },
+  twin:   { name: "Twin Blasters",     cost: 100,  dmg: 1, delay: 300, maxLvl: 25, upCost: 20,  desc: "1 dmg · average rate · twin barrel", twin: true },
+  smc:    { name: "Space Sub-Machine Cannons", cost: 400, dmg: 1, delay: 450, maxLvl: 30, upCost: 65, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 5 },
+  blaster:{ name: "Blaster Cannons",   cost: 450,  dmg: 3, delay: 700, maxLvl: 20, upCost: 30,  desc: "3 dmg · slow rate · AOE", aoe: 46 },
   smg:    { name: "Space Machine Gun", cost: 750,  dmg: 1, delay: 130, maxLvl: 20, upCost: 50,  desc: "1 dmg · fast fire rate" },
   rocket: { name: "Rocket Missile",    cost: 850,  dmg: 8, delay: 900, maxLvl: 20, upCost: 70,  desc: "8 dmg · very slow · AOE · smoke trail", aoe: 60, big: true, trail: true },
-  laser:  { name: "Laser Gun",         cost: 1000, dmg: 5, delay: 340, maxLvl: 15, upCost: 80,  desc: "5 dmg · average fire rate", laser: true },
+  laser:  { name: "Laser Gun",         cost: 1000, dmg: 5, delay: 380, maxLvl: 15, upCost: 80,  desc: "5 dmg · average fire rate", laser: true },
   plasma: { name: "Plasma Laser Beam", cost: 2500, dmg: 5, delay: 0,   maxLvl: 25, upCost: 100, desc: "5 dmg · continuous beam · pulses", beam: true, beamOn: 48, beamOff: 34 },
 };
 
@@ -66,8 +66,8 @@ export default function SpaceGuardian({ onGameOver }) {
     };
     for (let i = 0; i < 55; i++) s.stars.push({ x: Math.random() * W, y: Math.random() * H, v: 0.4 + Math.random() * 1.2 });
 
-    // every 60s alive, every enemy gains +1 hp
-    const bonusHp = () => Math.floor(s.t / 3600);
+    // every 60s survived, every newly spawned enemy gains +1 hp
+    const bonusHp = () => Math.floor(s.t / 7200);
 
     const keys = {};
     const onKey = (e) => {
@@ -142,8 +142,8 @@ export default function SpaceGuardian({ onGameOver }) {
 
       const empActive = s.t < s.empUntil;
       const snared = s.t < s.snaredUntil;
-      const slowMult = empActive ? 1.8 : 1; // EMP: slower fire
-      const bulletSlow = empActive ? 0.5 : 1; // EMP: slower bullets
+      const slowMult = empActive ? 1.8 : 1;
+      const bulletSlow = empActive ? 0.5 : 1;
 
       s.spawnEvery = Math.max(28, 95 - Math.floor(s.t / 300) * 6);
       if (s.t % s.spawnEvery === 0) spawn(pickType());
@@ -158,7 +158,7 @@ export default function SpaceGuardian({ onGameOver }) {
 
       const px = s.x, py = H - 40;
 
-      // ---- firing (blocked while snared) ----
+      // ---- player firing (blocked while snared) ----
       if (weapon.beam) {
         s.beamT += 1;
         const onFrames = Math.round(weapon.beamOn);
@@ -231,7 +231,7 @@ export default function SpaceGuardian({ onGameOver }) {
         if (b.trail && s.t % 2 === 0) s.smoke.push({ x: b.x + (Math.random() * 4 - 2), y: b.y + 8, r: 3.5, a: 0.55 });
       });
       s.bullets = s.bullets.filter((b) => b.y > -20);
-      s.ebullets.forEach((b) => { b.y += b.v; b.x += b.vx || 0; });
+      s.ebullets.forEach((b) => { b.y += b.v; });
       s.ebullets = s.ebullets.filter((b) => b.y < H + 20);
 
       s.smoke.forEach((p) => { p.r += 0.35; p.a -= 0.022; });
@@ -244,20 +244,18 @@ export default function SpaceGuardian({ onGameOver }) {
         if (e.type === "bounty") {
           if (e.y < E.parkY) e.y += E.speed;
         } else if (E.hunter) {
-          // descend to the hover line, then stay up there forever
+          // descend to the hover line, then stay up there and stalk
           if (e.y < E.hoverY) e.y += E.speed;
 
           const playerSnared = s.t < s.snaredUntil;
-
-          // always slide toward the player's column (tracks X, never retreats down)
           const dx = px - e.x;
-          const trackSpeed = playerSnared ? 4.0 : e.snareFired ? 2.5 : 3.5;
+          const trackSpeed = playerSnared ? 3.0 : e.snareFired ? 1.6 : 2.2;
           e.x += Math.max(-trackSpeed, Math.min(trackSpeed, dx * 0.07));
           e.x = Math.max(20, Math.min(W - 20, e.x));
 
           if (!e.snareFired) {
             e.markT += 1;
-            if (e.markT > 180) { // 3s of marking while chasing your lane, then the snare
+            if (e.markT > 180) { // 3s mark while tracking, then the snare
               s.ebullets.push({ x: e.x, y: e.y + E.h / 2, v: 4.2, dmg: 0, color: "#00e0c6", snare: true, long: 30 });
               e.snareFired = true;
             }
@@ -267,7 +265,8 @@ export default function SpaceGuardian({ onGameOver }) {
               s.ebullets.push({ x: e.x - 8, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: 1, color: "#00e0c6", long: 24 });
               s.ebullets.push({ x: e.x + 8, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: 1, color: "#00e0c6", long: 24 });
             }
-          } else if (Math.random() < E.fireChance) {
+          } else if (s.t - (e.lastShot || 0) > 42) {
+            e.lastShot = s.t;
             s.ebullets.push({ x: e.x - 8, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: 1, color: "#00e0c6", long: 24 });
             s.ebullets.push({ x: e.x + 8, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: 1, color: "#00e0c6", long: 24 });
           }
@@ -276,23 +275,22 @@ export default function SpaceGuardian({ onGameOver }) {
           e.wob += 0.05;
           if (e.type === "hummingbird") e.x += Math.sin(e.wob) * 2.2;
 
-          if (E.barrels) {
-            // Dark Resistance: 3-barrel sub-machine bursts
-            if (Math.random() < E.fireChance) {
-              [-12, 0, 12].forEach((off, i) => {
-                s.ebullets.push({ x: e.x + off, y: e.y + E.h / 2 + i * 4, v: E.bulletSpeed, dmg: E.dmg, color: "#c9cde6", long: 24 });
+          // cooldown-based firing: discrete, evenly spaced shots (no stacking)
+          const interval = Math.round(1 / (E.fireChance || 0.004)) * 0.6;
+          if (E.fireChance > 0 && s.t - (e.lastShot || 0) > interval) {
+            e.lastShot = s.t;
+            if (E.barrels) {
+              [-12, 0, 12].forEach((off) => {
+                s.ebullets.push({ x: e.x + off, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: E.dmg, color: "#c9cde6", long: 24 });
+              });
+            } else if (E.emp) {
+              s.ebullets.push({ x: e.x, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: E.dmg, color: E.color, emp: true, born: s.t });
+            } else {
+              s.ebullets.push({
+                x: e.x, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: E.dmg, color: E.color,
+                long: e.type === "mothership" ? 42 : 24,
               });
             }
-          } else if (E.fireChance > 0 && Math.random() < E.fireChance) {
-            s.ebullets.push({
-              x: e.x, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: E.dmg, color: E.color,
-              emp: !!E.emp, long: E.emp ? 30 : e.type === "mothership" ? 42 : 24,
-            });
-          } else if (E.fireChance > 0 && Math.random() < E.fireChance) {
-            s.ebullets.push({
-              x: e.x, y: e.y + E.h / 2, v: E.bulletSpeed, dmg: E.dmg, color: E.color,
-              emp: !!E.emp, long: E.emp ? 18 : e.type === "mothership" ? 26 : 14,
-            });
           }
         }
       });
@@ -322,14 +320,14 @@ export default function SpaceGuardian({ onGameOver }) {
       s.blasts.forEach((bl) => { bl.r += 3.4; bl.alpha -= 0.06; });
       s.blasts = s.blasts.filter((bl) => bl.alpha > 0 && bl.r < bl.max + 20);
 
-      // enemy bullets vs player (specials apply here)
+      // enemy bullets vs player
       s.ebullets = s.ebullets.filter((b) => {
         if (Math.abs(b.x - px) < 18 && Math.abs(b.y - py) < 14) {
           if (b.snare) {
-            s.snaredUntil = s.t + 120; // 2s frozen, no shooting
+            s.snaredUntil = s.t + 120;
             s.snareX = s.x;
           } else if (b.emp) {
-            s.empUntil = s.t + 120;    // 2s slowed fire and bullets
+            s.empUntil = s.t + 120;
             hurt(b.dmg);
           } else {
             hurt(b.dmg);
@@ -426,9 +424,9 @@ export default function SpaceGuardian({ onGameOver }) {
       ctx.fillStyle = "#ff8a3d";
       s.missiles.forEach((m) => ctx.fillRect(m.x - 3, m.y - 6, 6, 12));
 
-      // enemy bullets: longer tracers with a bright core and glow tail
+      // enemy bullets
       s.ebullets.forEach((b) => {
-        const len = b.long || 18;
+        const len = b.long || 12;
         if (b.snare) {
           ctx.fillStyle = "rgba(0, 224, 198, 0.35)";
           ctx.fillRect(b.x - 6, b.y, 12, len);
@@ -437,11 +435,18 @@ export default function SpaceGuardian({ onGameOver }) {
           ctx.fillStyle = "#eafffb";
           ctx.fillRect(b.x - 1, b.y + 2, 2, len - 4);
         } else if (b.emp) {
-          const pulse = 0.6 + Math.sin(s.t * 0.5) * 0.3;
-          ctx.fillStyle = `rgba(59, 184, 229, ${pulse})`;
-          ctx.fillRect(b.x - 6, b.y, 12, len);
+          // small EMP blast orb
+          const age = s.t - (b.born || 0);
+          const pulse = 4 + Math.sin(age * 0.35) * 2;
+          ctx.strokeStyle = `rgba(59, 184, 229, ${0.35 + Math.sin(age * 0.35) * 0.2})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 9 + pulse, 0, Math.PI * 2); ctx.stroke();
+          ctx.fillStyle = "rgba(59, 184, 229, 0.4)";
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 7, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = "#bde9fb";
-          ctx.fillRect(b.x - 2, b.y, 4, len);
+          ctx.beginPath(); ctx.arc(b.x, b.y + 6, 3.5, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(b.x - 1, b.y + 5, 2, 2);
         } else {
           ctx.fillStyle = `${b.color}55`;
           ctx.fillRect(b.x - 4, b.y, 8, len);
@@ -474,7 +479,7 @@ export default function SpaceGuardian({ onGameOver }) {
         }
       });
 
-      // hunter's targeting reticle over the player during its 3s mark
+      // hunter's targeting reticle during its mark
       const marking = s.enemies.find((e) => ENEMIES[e.type].hunter && !e.snareFired && e.markT > 20);
       if (marking) {
         const prog = Math.min(1, marking.markT / 180);
@@ -503,7 +508,6 @@ export default function SpaceGuardian({ onGameOver }) {
       ctx.fillRect(px - 6, py + 10, 4, 5 + (s.t % 6 < 3 ? 3 : 0));
       ctx.fillRect(px + 2, py + 10, 4, 5 + (s.t % 6 >= 3 ? 3 : 0));
 
-      // status overlays
       if (snared) {
         ctx.strokeStyle = `rgba(0, 224, 198, ${0.5 + Math.sin(s.t * 0.4) * 0.3})`;
         ctx.lineWidth = 3;

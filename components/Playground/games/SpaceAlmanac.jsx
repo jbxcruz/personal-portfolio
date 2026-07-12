@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../Playground.module.scss";
 import { WEAPONS, ENEMIES, weaponDmg } from "./SpaceGuardian";
+import { ACCESSORIES } from "./SpaceShop";
 
 const LORE = {
   fighter: "The rank and file of the void. Cheap, plentiful, and always first through the door.",
@@ -11,9 +12,9 @@ const LORE = {
   galaxy: "Elite plasma escort. Whatever it hits, it hits once, and once is usually enough.",
   crusader: "A slab of armor with engines bolted on. Kill it and it simply becomes three problems.",
   timekeeper: "It doesn't want to kill you. It wants to slow you down until something else does.",
-  hunter: "Patient, cold, methodical. It marks you, snares you, then parks in your lane and waits.",
+  hunter: "Patient, cold, methodical. It stalks your lane from above and never once looks away.",
   darkres: "Salvaged hull, three stolen sub-machine barrels. Cheap engineering, expensive to fight.",
-  bounty: "It drifts in, shuts off its engines, and dares you to spend the ammo. Worth every round.",
+  bounty: "It drifts in, cuts its engines, and dares you to spend the ammo. Worth every round.",
   mothership: "The rarest silhouette on the field. Killing it is an achievement. Surviving what it drops is another.",
 };
 
@@ -28,7 +29,17 @@ const GUN_LORE = {
   plasma: "Not a bullet. A standing column of plasma that eats anything it touches.",
 };
 
-function Sprite({ id, kind, size = 40 }) {
+const ACC_LORE = {
+  armor: "Plating bolted over the hull. Every hit lands softer, but nothing lands for free.",
+  health: "More heart, literally. Each level is one more mistake you get to survive.",
+  orb: "A shard of something old, circling Jebby. It doesn't ask permission before it bites.",
+  twinorb: "Two shards now. The ring around your ship becomes a threat in its own right.",
+  gunattach: "A crude bracket, an extra barrel, and a great deal more noise.",
+  firerate: "Tuned coils and cooler barrels. Everything you own fires faster.",
+  homing: "Fire and forget. It picks a target, and it does not lose interest.",
+};
+
+function Sprite({ id, kind, size = 44 }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -52,8 +63,7 @@ function Sprite({ id, kind, size = 40 }) {
       ctx.fillStyle = "#111";
       ctx.fillRect(cx - w * 0.22, cy - h * 0.18, 4 * scale, 4 * scale);
       ctx.fillRect(cx + w * 0.22 - 4 * scale, cy - h * 0.18, 4 * scale, 4 * scale);
-    } else {
-      // gun: draw its signature projectile
+    } else if (kind === "gun") {
       const w = WEAPONS[id];
       if (w.beam) {
         ctx.fillStyle = "rgba(180,107,255,0.35)"; ctx.fillRect(cx - 8, 4, 16, cvs.height - 8);
@@ -83,69 +93,112 @@ function Sprite({ id, kind, size = 40 }) {
         ctx.fillStyle = "#ffd21e";
         ctx.fillRect(cx - 3, cy - 10, 6, 20);
       }
+    } else {
+      // accessory icons
+      if (id === "orb" || id === "twinorb") {
+        const draw = (ox) => {
+          ctx.fillStyle = "#1c6f95"; ctx.fillRect(ox - 8, cy - 8, 16, 16);
+          ctx.fillStyle = "#3BB8E5"; ctx.fillRect(ox - 6, cy - 6, 12, 12);
+          ctx.fillStyle = "#8fd8f2"; ctx.fillRect(ox - 3, cy - 3, 6, 6);
+        };
+        if (id === "twinorb") { draw(cx - 10); draw(cx + 10); } else draw(cx);
+      } else if (id === "armor") {
+        ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 10, cy - 12, 20, 16);
+        ctx.fillStyle = "#9aa0bf"; ctx.fillRect(cx - 7, cy - 9, 14, 10);
+        ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 8, cy + 4, 16, 8);
+      } else if (id === "health") {
+        ctx.fillStyle = "#e14b4a";
+        ctx.fillRect(cx - 10, cy - 8, 6, 6); ctx.fillRect(cx + 4, cy - 8, 6, 6);
+        ctx.fillRect(cx - 10, cy - 2, 20, 6); ctx.fillRect(cx - 6, cy + 4, 12, 5);
+        ctx.fillRect(cx - 2, cy + 9, 4, 4);
+      } else if (id === "gunattach") {
+        ctx.fillStyle = "#ffd21e";
+        ctx.fillRect(cx - 12, cy - 10, 5, 18);
+        ctx.fillRect(cx + 7, cy - 10, 5, 18);
+        ctx.fillStyle = "#6b6f8a"; ctx.fillRect(cx - 12, cy + 8, 24, 4);
+      } else if (id === "firerate") {
+        ctx.fillStyle = "#ff8a3d";
+        ctx.fillRect(cx - 2, cy - 14, 5, 8);
+        ctx.fillRect(cx - 2, cy - 3, 5, 8);
+        ctx.fillRect(cx - 2, cy + 8, 5, 6);
+        ctx.fillStyle = "#ffd21e"; ctx.fillRect(cx + 6, cy - 10, 3, 20);
+      } else if (id === "homing") {
+        ctx.fillStyle = "#cdd6ea"; ctx.fillRect(cx - 4, cy - 10, 8, 14);
+        ctx.fillStyle = "#e14b4a"; ctx.fillRect(cx - 4, cy - 13, 8, 3);
+        ctx.fillStyle = "#ff8a3d"; ctx.fillRect(cx - 2, cy + 4, 4, 6);
+      }
     }
   }, [id, kind]);
 
   return <canvas ref={ref} width={size} height={size} className={styles.almSprite} />;
 }
 
-export default function SpaceAlmanac() {
+export default function SpaceAlmanac({ onExit }) {
   const [tab, setTab] = useState("enemies");
   const [openId, setOpenId] = useState(null);
 
-  const isEnemy = tab === "enemies";
-  const entries = isEnemy ? Object.entries(ENEMIES) : Object.entries(WEAPONS);
+  const kind = tab === "enemies" ? "enemy" : tab === "guns" ? "gun" : "acc";
+  const source = tab === "enemies" ? ENEMIES : tab === "guns" ? WEAPONS : ACCESSORIES;
+  const entries = Object.entries(source);
 
-  if (openId) {
-    if (isEnemy) {
-      const e = ENEMIES[openId];
-      return (
-        <div className={styles.almDetail}>
-          <button className={styles.almBack} onClick={() => setOpenId(null)}>‹ Back</button>
-          <Sprite id={openId} kind="enemy" size={72} />
-          <h4 className={styles.almTitle}>{e.name}</h4>
-          <p className={styles.almLore}>{LORE[openId]}</p>
-          <div className={styles.almStatRow}>
-            <span><b>Lives</b> {e.hp}</span>
-            <span><b>Points</b> {e.pts}</span>
-            <span><b>Damage</b> {e.dmg}</span>
-          </div>
-          <p className={styles.almSpecial}>{e.desc}</p>
-        </div>
-      );
-    }
-    const w = WEAPONS[openId];
-    return (
-      <div className={styles.almDetail}>
-        <button className={styles.almBack} onClick={() => setOpenId(null)}>‹ Back</button>
-        <Sprite id={openId} kind="gun" size={72} />
-        <h4 className={styles.almTitle}>{w.name}</h4>
-        <p className={styles.almLore}>{GUN_LORE[openId]}</p>
-        <div className={styles.almStatRow}>
-          <span><b>Damage</b> {w.dmg}</span>
-          <span><b>Max LV</b> {w.maxLvl}</span>
-          <span><b>At max</b> {weaponDmg(openId, w.maxLvl)} dmg</span>
-        </div>
-        <p className={styles.almSpecial}>{w.desc}</p>
-      </div>
-    );
-  }
+  const switchTab = (t) => { setTab(t); setOpenId(null); };
 
   return (
-    <div className={styles.shopWrap}>
+    <div className={styles.almWrap}>
       <div className={styles.shopTabs}>
-        <button className={`${styles.shopTab} ${isEnemy ? styles.shopTabOn : ""}`} onClick={() => { setTab("enemies"); setOpenId(null); }}>Enemies</button>
-        <button className={`${styles.shopTab} ${!isEnemy ? styles.shopTabOn : ""}`} onClick={() => { setTab("guns"); setOpenId(null); }}>Guns</button>
+        <button className={`${styles.shopTab} ${tab === "enemies" ? styles.shopTabOn : ""}`} onClick={() => switchTab("enemies")}>Enemies</button>
+        <button className={`${styles.shopTab} ${tab === "guns" ? styles.shopTabOn : ""}`} onClick={() => switchTab("guns")}>Guns</button>
+        <button className={`${styles.shopTab} ${tab === "acc" ? styles.shopTabOn : ""}`} onClick={() => switchTab("acc")}>Accessories</button>
       </div>
 
-      <div className={styles.almGrid}>
-        {entries.map(([id, item]) => (
-          <button key={id} className={styles.almTile} onClick={() => setOpenId(id)}>
-            <Sprite id={id} kind={isEnemy ? "enemy" : "gun"} size={44} />
-            <span className={styles.almName}>{item.name}</span>
-          </button>
-        ))}
+      <div className={styles.almBody}>
+        {!openId ? (
+          <div className={styles.almGrid}>
+            {entries.map(([id, item]) => (
+              <button key={id} className={styles.almTile} onClick={() => setOpenId(id)}>
+                <Sprite id={id} kind={kind} size={44} />
+                <span className={styles.almName}>{item.name}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.almDetail}>
+            <Sprite id={openId} kind={kind} size={70} />
+            <h4 className={styles.almTitle}>{source[openId].name}</h4>
+            <p className={styles.almLore}>
+              {tab === "enemies" ? LORE[openId] : tab === "guns" ? GUN_LORE[openId] : ACC_LORE[openId]}
+            </p>
+            <div className={styles.almStatRow}>
+              {tab === "enemies" && (
+                <>
+                  <span><b>Lives</b> {source[openId].hp}</span>
+                  <span><b>Points</b> {source[openId].pts}</span>
+                  <span><b>Damage</b> {source[openId].dmg}</span>
+                </>
+              )}
+              {tab === "guns" && (
+                <>
+                  <span><b>Damage</b> {source[openId].dmg}</span>
+                  <span><b>Max LV</b> {source[openId].maxLvl}</span>
+                  <span><b>At max</b> {weaponDmg(openId, source[openId].maxLvl)} dmg</span>
+                </>
+              )}
+              {tab === "acc" && (
+                <>
+                  <span><b>Cost</b> {source[openId].cost || source[openId].upCost}</span>
+                  {source[openId].maxLvl > 0 && <span><b>Max LV</b> {source[openId].maxLvl}</span>}
+                </>
+              )}
+            </div>
+            <p className={styles.almSpecial}>{source[openId].desc}</p>
+          </div>
+        )}
       </div>
+
+      {/* one Back button, always in the same place */}
+      <button className={styles.almBackBtn} onClick={() => (openId ? setOpenId(null) : onExit?.())}>
+        {openId ? "‹ Back to Almanac" : "← Back to menu"}
+      </button>
     </div>
   );
 }

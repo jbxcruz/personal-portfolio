@@ -11,7 +11,7 @@ export const ACCESSORIES = {
   orb:      { name: "Orb", desc: "Orbiting orb, +1 dmg on touch", cost: 1000, upCost: 500, maxLvl: 5, buyFirst: true },
   twinorb:  { name: "Twin Orbs", desc: "Second orbiting orb", cost: 2000, upCost: 0, maxLvl: 0, buyFirst: true, hidden: true },
   gunattach:{ name: "+1 Gun Attachment", desc: "+1 cannon barrel on any gun", cost: 2000, upCost: 2000, maxLvl: 2, buyFirst: true },
-  firerate: { name: "Fire Rate", desc: "+1 fire speed for every gun", cost: 0, upCost: 350, maxLvl: 5, buyFirst: false },
+  firerate: { name: "Fire Rate", desc: "+1 fire speed for every gun", cost: 0, upCost: 450, maxLvl: 5, buyFirst: false },
   homing:   { name: "Homing Missile", desc: "Slow rate, seeks a random enemy, 5 dmg", cost: 1500, upCost: 0, maxLvl: 0, buyFirst: true },
 };
 
