@@ -5,30 +5,30 @@ import styles from "../Playground.module.scss";
 import { loadProfile, saveProfile } from "../arcade";
 
 export const WEAPONS = {
-  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 300, maxLvl: 10, upCost: 10,  desc: "1 dmg · average fire rate" },
-  twin:   { name: "Twin Blasters",     cost: 100,  dmg: 1, delay: 300, maxLvl: 15, upCost: 20,  desc: "1 dmg · average rate · twin barrel", twin: true },
-  smc:    { name: "Space Sub-Machine Cannons", cost: 400, dmg: 1, delay: 600, maxLvl: 30, upCost: 30, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 5 },
-  blaster:{ name: "Blaster Cannons",   cost: 450,  dmg: 3, delay: 650, maxLvl: 20, upCost: 30,  desc: "3 dmg · slow rate · AOE", aoe: 46 },
-  smg:    { name: "Space Machine Gun", cost: 750,  dmg: 1, delay: 130, maxLvl: 20, upCost: 50,  desc: "1 dmg · fast fire rate" },
-  rocket: { name: "Rocket Missile",    cost: 850,  dmg: 8, delay: 900, maxLvl: 20, upCost: 70,  desc: "8 dmg · very slow · AOE · smoke trail", aoe: 60, big: true, trail: true },
-  laser:  { name: "Laser Gun",         cost: 1000, dmg: 5, delay: 340, maxLvl: 15, upCost: 80,  desc: "5 dmg · average fire rate", laser: true },
-  plasma: { name: "Plasma Laser Beam", cost: 2500, dmg: 5, delay: 0,   maxLvl: 20, upCost: 100, desc: "5 dmg · continuous beam · pulses", beam: true, beamOn: 48, beamOff: 34 },
+  basic:  { name: "Basic Fire Cannon", cost: 0,    dmg: 1, delay: 320, maxLvl: 10, upCost: 25,  desc: "1 dmg · average fire rate" },
+  twin:   { name: "Twin Blasters",     cost: 300,  dmg: 1, delay: 300, maxLvl: 10, upCost: 35,  desc: "1 dmg · average rate · twin barrel", twin: true },
+  smc:    { name: "Space Sub-Machine Cannons", cost: 650, dmg: 1, delay: 600, maxLvl: 15, upCost: 70, desc: "1 dmg · 3-round burst", burst: 3, burstGap: 6 },
+  blaster:{ name: "Blaster Cannons",   cost: 850,  dmg: 3, delay: 650, maxLvl: 15, upCost: 100,  desc: "3 dmg · slow rate · AOE", aoe: 40 },
+  smg:    { name: "Space Machine Gun", cost: 1100,  dmg: 1, delay: 130, maxLvl: 10, upCost: 180,  desc: "1 dmg · fast fire rate" },
+  rocket: { name: "Rocket Missile",    cost: 1500,  dmg: 5, delay: 1000, maxLvl: 15, upCost: 300,  desc: "5 dmg · very slow · AOE · smoke trail", aoe: 55, big: true, trail: true },
+  laser:  { name: "Laser Gun",         cost: 3000, dmg: 4, delay: 340, maxLvl: 10, upCost: 350,  desc: "4 dmg · average fire rate", laser: true },
+  plasma: { name: "Plasma Laser Beam", cost: 5000, dmg: 3, delay: 0,   maxLvl: 15, upCost: 500, desc: "3 dmg · continuous beam · pulses", beam: true, beamOn: 45, beamOff: 38 },
 };
 
 export const weaponDmg = (id, lvl) => WEAPONS[id].dmg + Math.floor(lvl / 5);
 
 export const ENEMIES = {
-  fighter:     { name: "Space Fighter", hp: 1,  pts: 1,  speed: 1.0,  dmg: 1,  w: 26, h: 20, color: "#4ade80", fireChance: 0.004, bulletSpeed: 2.6, desc: "A basic fighter with standard cannons." },
-  hummingbird: { name: "Space Hummingbird", hp: 1, pts: 2, speed: 2.1, dmg: 1, w: 22, h: 16, color: "#ffd21e", fireChance: 0.004, bulletSpeed: 2.6, desc: "Fast and weaving. Hard to pin down." },
-  gunner:      { name: "Space Gunner", hp: 4,  pts: 10, speed: 0.8,  dmg: 1,  w: 28, h: 22, color: "#ff8a3d", fireChance: 0.02,  bulletSpeed: 3.0, desc: "Machine guns. Fires roughly 5x as often." },
-  galaxy:      { name: "Galaxy Fighter", hp: 3, pts: 3, speed: 0.9,  dmg: 5,  w: 30, h: 24, color: "#e14b4a", fireChance: 0.006, bulletSpeed: 3.2, desc: "Plasma cannons. Hits brutally hard." },
-  crusader:    { name: "Galaxy Crusader", hp: 5, pts: 5, speed: 0.45, dmg: 3, w: 44, h: 32, color: "#b46bff", fireChance: 0.007, bulletSpeed: 2.2, wings: true, desc: "Broad-winged tank. Splits into 3 Space Fighters when destroyed." },
+  fighter:     { name: "Space Fighter", hp: 1,  pts: 1,  speed: 1.0,  dmg: 1,  w: 26, h: 20, color: "#4ade80", fireChance: 0.003, bulletSpeed: 2.3, desc: "A basic fighter with standard cannons." },
+  hummingbird: { name: "Space Hummingbird", hp: 1, pts: 2, speed: 2.1, dmg: 1, w: 22, h: 16, color: "#ffd21e", fireChance: 0.004, bulletSpeed: 2.3, desc: "Fast and weaving. Hard to pin down." },
+  gunner:      { name: "Space Gunner", hp: 3,  pts: 5, speed: 0.8,  dmg: 1,  w: 28, h: 22, color: "#ff8a3d", fireChance: 0.02,  bulletSpeed: 3.0, desc: "Machine guns. Fires roughly 5x as often." },
+  galaxy:      { name: "Galaxy Fighter", hp: 5, pts: 8, speed: 0.9,  dmg: 5,  w: 30, h: 24, color: "#e14b4a", fireChance: 0.006, bulletSpeed: 3.2, desc: "Plasma cannons. Hits brutally hard." },
+  crusader:    { name: "Galaxy Crusader", hp: 8, pts: 10, speed: 0.45, dmg: 3, w: 44, h: 32, color: "#b46bff", fireChance: 0.007, bulletSpeed: 2.2, wings: true, desc: "Broad-winged tank. Splits into 3 Space Fighters when destroyed." },
   timekeeper:  { name: "Time Keeper", hp: 4, pts: 30, speed: 0.7, dmg: 2, w: 30, h: 26, color: "#3BB8E5", fireChance: 0.014, bulletSpeed: 2.4, emp: true, desc: "EMP blasts, fired often. A hit slows your fire rate and bullets for 2s." },
-  hunter:      { name: "Space Hunter", hp: 4, pts: 35, speed: 0.75, dmg: 1, w: 30, h: 24, color: "#00e0c6", fireChance: 0.012, bulletSpeed: 3.4, hunter: true, hoverY: 120, desc: "Stalks your lane from above. Marks you for 2s, fires a Snare, then hunts you while you're frozen." },
-  darkres:     { name: "Dark Resistance", hp: 8, pts: 35, speed: 0.5, dmg: 1, w: 40, h: 30, color: "#6b6f8a", fireChance: 0.016, bulletSpeed: 3.2, barrels: 3, wings: true, redEyes: true, desc: "Heavy winged hull, 3 sub-machine barrels firing in bursts." },
-  bounty:      { name: "Space Bounty", hp: 15, pts: 50, speed: 0.6, dmg: 2, w: 40, h: 34, color: "#cdd6ea", fireChance: 0, bulletSpeed: 0, parkY: 90, desc: "Never moves once parked, never fires. Pure bounty." },
-  mothership:  { name: "Mothership", hp: 10, pts: 35, speed: 0.35, dmg: 10, w: 56, h: 36, color: "#ff6bb3", fireChance: 0.009, bulletSpeed: 4.5, crown: "#ffd21e", desc: "Crowned laser cruiser. Splits into 2 Galaxy Crusaders when destroyed." },
-  kingship:    { name: "Kingship", hp: 50, pts: 350, speed: 0.22, dmg: 5, w: 92, h: 56, color: "#7a3fb5", fireChance: 0.05, bulletSpeed: 5.2, boss: true, barrels: 4, wings: true, crown: "#e14b4a", redEyes: true, hoverY: 90, desc: "Super-heavy flagship. 4 laser barrels, summons escorts every 25s, and dies into 2 Motherships and a Bounty." },
+  hunter:      { name: "Space Hunter", hp: 4, pts: 35, speed: 0.75, dmg: 1, w: 30, h: 24, color: "#00e0c6", fireChance: 0.012, bulletSpeed: 3.6, hunter: true, hoverY: 120, desc: "Stalks your lane from above. Marks you for 2s, fires a Snare, then hunts you while you're frozen." },
+  darkres:     { name: "Dark Resistance", hp: 15, pts: 35, speed: 0.5, dmg: 1, w: 40, h: 30, color: "#6b6f8a", fireChance: 0.016, bulletSpeed: 3.2, barrels: 3, wings: true, redEyes: true, desc: "Heavy winged hull, 3 sub-machine barrels firing in bursts." },
+  bounty:      { name: "Space Bounty", hp: 20, pts: 50, speed: 0.6, dmg: 2, w: 40, h: 34, color: "#cdd6ea", fireChance: 0, bulletSpeed: 0, parkY: 90, desc: "Never moves once parked, never fires. Pure bounty." },
+  mothership:  { name: "Mothership", hp: 250, pts: 35, speed: 0.35, dmg: 10, w: 56, h: 36, color: "#ff6bb3", fireChance: 0.009, bulletSpeed: 4.5, crown: "#ffd21e", desc: "Crowned laser cruiser. Splits into 2 Galaxy Crusaders when destroyed." },
+  kingship:    { name: "Kingship", hp: 2500, pts: 500, speed: 0.22, dmg: 5, w: 92, h: 56, color: "#7a3fb5", fireChance: 0.05, bulletSpeed: 5.2, boss: true, barrels: 4, wings: true, crown: "#e14b4a", redEyes: true, hoverY: 90, desc: "Super-heavy flagship. 4 laser barrels, summons escorts every 25s, and dies into 2 Motherships and a Bounty." },
 };
 
 const W = 620, H = 440;
