@@ -21,7 +21,7 @@ export const weaponDmg = (id, lvl) => WEAPONS[id].dmg + Math.floor(lvl / 5);
 
 export const ENEMIES = {
   bounty:      { name: "Space Bounty", hp: 20, pts: 50, speed: 0.6, dmg: 2, w: 40, h: 34, color: "#cdd6ea", fireChance: 0, bulletSpeed: 0, parkY: 90, desc: "Never moves once parked, never fires. Pure bounty. May drop Uncommon buffs." },
-  fighter:     { name: "Space Fighter", hp: 1,  pts: 1000,  speed: 1.0,  dmg: 1,  w: 26, h: 20, color: "#4ade80", fireChance: 0.003, bulletSpeed: 2.3, desc: "A basic fighter with standard cannons." },
+  fighter:     { name: "Space Fighter", hp: 1,  pts: 2,  speed: 1.0,  dmg: 1,  w: 26, h: 20, color: "#4ade80", fireChance: 0.003, bulletSpeed: 2.3, desc: "A basic fighter with standard cannons." },
   hummingbird: { name: "Space Hummingbird", hp: 1, pts: 2, speed: 2.1, dmg: 1, w: 22, h: 16, color: "#ffd21e", fireChance: 0.004, bulletSpeed: 2.3, desc: "Fast and weaving. Hard to pin down." },
   gunner:      { name: "Space Gunner", hp: 3,  pts: 5, speed: 0.8,  dmg: 1,  w: 28, h: 22, color: "#ff8a3d", fireChance: 0.02,  bulletSpeed: 3.0, desc: "Machine guns. Fires roughly 5x as often. May drop Uncommon buffs." },
   galaxy:      { name: "Galaxy Fighter", hp: 5, pts: 8, speed: 0.9,  dmg: 5,  w: 30, h: 24, color: "#e14b4a", fireChance: 0.006, bulletSpeed: 3.2, desc: "Plasma cannons. Hits brutally hard." },
