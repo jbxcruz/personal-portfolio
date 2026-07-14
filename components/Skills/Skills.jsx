@@ -4,32 +4,33 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Skills.module.scss";
 
+
 const CHARACTERS = [
   {
     id: "webdev", label: "Web Development", color: "#3BB8E5", stars: 4,
     lines: ["I love to design UI/UX", "Frontend? or Backend?", "One day, I'll build my own app.", "My dream is to be a software engineer"],
     groups: [
       { name: "Frontend", skills: [
-        { name: "React", pct: 65 }, { name: "Next.js", pct: 70 }, { name: "TypeScript", pct: 55 },
-        { name: "HTML / CSS", pct: 80 }, { name: "SCSS", pct: 70 }, { name: "Framer Motion", pct: 65 },
+        { name: "React", pct: 55 }, { name: "Next.js", pct: 60 }, { name: "TypeScript", pct: 50 },
+        { name: "HTML / CSS", pct: 75 }, { name: "SCSS", pct: 65 }, { name: "Framer Motion", pct: 60 },
       ]},
       { name: "Backend", skills: [
-        { name: "Node.js", pct: 60 }, { name: "PHP", pct: 60 },
-        { name: "Supabase", pct: 70 }, { name: "SQL / PostgreSQL", pct: 70 },
+        { name: "Node.js", pct: 60 }, { name: "PHP", pct: 50 },
+        { name: "Supabase", pct: 70 }, { name: "SQL / PostgreSQL", pct: 65 },
       ]},
     ],
   },
   {
-    id: "writing", label: "Creativity", color: "#ffd21e", stars: 5,
+    id: "writing", label: "Creativity", color: "#ffd21e", stars: 4,
     lines: ["I love to write", "I just love to make stories", "Everbody's good at something", "What's your story?"],
     groups: [
       { name: "Writing", skills: [
-        { name: "Copywriting", pct: 65 }, { name: "Creative Writing", pct: 85 },
+        { name: "Copywriting", pct: 50 }, { name: "Creative Writing", pct: 85 },
       ]},
       { name: "Core Skills", skills: [
         { name: "Critical Thinking", pct: 65 }, { name: "Problem Solving", pct: 60 },
-        { name: "Adaptability", pct: 70 }, { name: "Research", pct: 80 },
-        { name: "Time Management", pct: 75 },
+        { name: "Adaptability", pct: 70 }, { name: "Research", pct: 75 },
+        { name: "Time Management", pct: 70 },
       ]},
     ],
   },
@@ -38,14 +39,14 @@ const CHARACTERS = [
     lines: ["I want a Robot", "Don't be afraid to use AI", "AI is the future", "A Robot dog, or a Robot cat?"],
     groups: [
       { name: "AI Training", skills: [
-        { name: "LLM Evaluation", pct: 70 }, { name: "Data Annotation", pct: 75 },
+        { name: "LLM Evaluation", pct: 70 }, { name: "Data Annotation", pct: 70 },
         { name: "Benchmark Design", pct: 60 }, { name: "Linguistic AI Auditing", pct: 60 },
         { name: "Prompt Engineering", pct: 70 }, { name: "AI-assisted Development", pct: 80 },
       ]},
       { name: "Machine Learning", skills: [
-        { name: "PyTorch", pct: 55 }, { name: "NumPy  ", pct: 70 }, 
-        { name: "Data Visualization", pct: 80 }, { name: "Pandas", pct: 75 },
-        { name: "CNNs (Computer Vision)", pct: 60 }, { name: "Scikit-learn", pct: 55 }, { name: "Streamlit", pct: 65 },
+        { name: "PyTorch", pct: 50 }, { name: "NumPy  ", pct: 60 }, 
+        { name: "Data Visualization", pct: 75 }, { name: "Pandas", pct: 65 },
+        { name: "CNNs (Computer Vision)", pct: 50 }, { name: "Scikit-learn", pct: 40 }, { name: "Streamlit", pct: 45 },
 
       ]},
     ],
@@ -55,8 +56,8 @@ const CHARACTERS = [
     lines: ["I'm trying!", "It's never too late to study", "I'm doing my best."],
     groups: [
       { name: "Languages", skills: [
-        { name: "JavaScript", pct: 70 }, { name: "TypeScript", pct: 60 }, { name: "Python", pct: 70 },
-        { name: "Java", pct: 50 }, { name: "C", pct: 45 }, { name: "SQL", pct: 70 }, { name: "PHP", pct: 60 },
+        { name: "JavaScript", pct: 60 }, { name: "TypeScript", pct: 50 }, { name: "Python", pct: 70 },
+        { name: "Java", pct: 40 }, { name: "C", pct: 45 }, { name: "SQL", pct: 65 }, { name: "PHP", pct: 50 },
       ]},
     ],
   },
@@ -65,9 +66,9 @@ const CHARACTERS = [
     lines: ["I love editing", "I love research", "I'm an amateur to this"],
     groups: [
       { name: "Tools & Craft", skills: [
-        { name: "Figma", pct: 60 }, { name: "Canva", pct: 80 },
-        { name: "Pixel Art", pct: 70 }, { name: "UI/UX Research", pct: 80 },
-        { name: "Capcut", pct: 65 },
+        { name: "Figma", pct: 50 }, { name: "Canva", pct: 75 },
+        { name: "Pixel Art", pct: 40 }, { name: "UI/UX Research", pct: 75 },
+        { name: "Capcut", pct: 50 },
       ]},
     ],
   },
@@ -76,8 +77,8 @@ const CHARACTERS = [
     lines: ["Not bad.", "Keep studying", "Trial and errors", "I love to learn new things"],
     groups: [
       { name: "Environment", skills: [
-        { name: "Ubuntu / Linux", pct: 45 }, { name: "PowerShell", pct: 50 },
-        { name: "XAMPP", pct: 50 }, { name: "Vercel", pct: 80 },
+        { name: "Ubuntu / Linux", pct: 35 }, { name: "PowerShell", pct: 35 },
+        { name: "XAMPP", pct: 40 }, { name: "Vercel", pct: 70 },
       ]},
     ],
   },
