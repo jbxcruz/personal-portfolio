@@ -1,45 +1,171 @@
-.nav {
+.bar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 50;
   background: var(--paper);
-  border-bottom: var(--border);
-  user-select: none;
-  -webkit-user-select: none;
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+  border-bottom: 3px solid var(--ink);
 }
 
 .inner {
-  max-width: 800px;   /* the bar content is capped and centered, so it insets from both edges */
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 68px;
-  padding: 0 1.5rem;
+  width: min(1200px, 88%);
+  margin: 0 auto;
+  padding: 0;
+}
+
+.brand {
   display: flex;
   align-items: center;
 }
 
 .logo {
   font-family: var(--font-display), sans-serif;
-  font-size: 1.7rem;
-  line-height: 1;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  letter-spacing: 0.04em;
 }
 
-.links {
-  margin-left: auto;
+.burger {
   display: flex;
-  gap: 2rem;
-  font-weight: 600;
-  font-size: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
+.line {
+  display: block;
+  height: 4px;
+  width: 28px;
+  background: var(--ink);
+  border-radius: 2px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 5rem 1.25rem 2rem;
+}
+
+.close {
+  position: absolute;
+  top: 18px;
+  right: clamp(1rem, 4vw, 2.5rem);
+  width: 48px;
+  height: 48px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--ink);
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.close:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.7rem;
+  width: min(880px, 94vw);
+}
+
+.menuItem {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+  color: var(--ink);
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 1.1rem 0.6rem;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.15s ease;
+}
+
+.menuItem:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.menuItemOn {
+  background: var(--ink);
+  color: var(--accent);
+}
+
+.socials { display: flex; gap: 0.7rem; }
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.15s ease;
+}
+
+.social:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+  background: var(--accent);
+}
+
+.legal {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.legalLink {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.legal a { color: var(--ink); text-decoration: underline; }
+.sep { width: 1px; height: 12px; background: var(--ink); opacity: 0.4; }
+
+@media (max-width: 860px) {
+  .menuGrid { grid-template-columns: repeat(2, 1fr); }
+}
 
 @media (max-width: 640px) {
-  .inner {
-    height: 56px;
-    padding: 0 1rem;
-  }
-  .logo { font-size: 1.35rem; }
-  .links { gap: 1rem; font-size: 0.85rem; }
+  .inner { height: 56px; }
+  .brand { gap: 0.7rem; }
+  .menuItem { padding: 0.85rem 0.5rem; box-shadow: 4px 4px 0 var(--ink); }
 }

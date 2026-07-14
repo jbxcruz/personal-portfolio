@@ -8,14 +8,15 @@ const NavContext = createContext(null);
 export const useNav = () => useContext(NavContext);
 
 const CELLS = [
-  { id: "intro", col: 0, row: 0 },
-  { id: "about", col: 0, row: 1 },
-  { id: "projects", col: 1, row: 1 },
-  { id: "skills", col: 1, row: 2 },
-  { id: "experience", col: 0, row: 2 },
-  { id: "education", col: -1, row: 2 },
-  { id: "certs", col: -1, row: 3 },
-  { id: "playground", col: -1, row: 4 },
+  { id: "intro",      col:  0, row: 0 },  // start
+  { id: "about",      col:  0, row: 1 },  // down
+  { id: "projects",   col:  1, row: 1 },  // right
+  { id: "skills",     col:  1, row: 2 },  // down
+  { id: "experience", col:  0, row: 2 },  // left
+  { id: "education",  col: -1, row: 2 },  // left
+  { id: "certs",      col: -1, row: 3 },  // down
+  { id: "playground", col:  0, row: 3 },  // right
+  { id: "contact",    col:  0, row: 4 },  // down
 ];
 
 const COOLDOWN = 1000;
@@ -130,7 +131,7 @@ const onKey = (e) => {
   const x = measured ? -cell.col * dims.w : 0;
   const y = measured ? -cell.row * dims.h : 0;
 
-  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length, setLocked };
+  const value = { index, activeId: cell.id, go, goTo, count: CELLS.length, setLocked, cells: CELLS };
 
   return (
     <NavContext.Provider value={value}>

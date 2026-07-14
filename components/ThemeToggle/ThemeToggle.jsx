@@ -94,9 +94,10 @@ export default function ThemeToggle() {
 
   // On first mount, adopt whatever the pre-paint script already set (from localStorage).
   useEffect(() => {
-    const saved = document.documentElement.getAttribute("data-theme");
-    if (saved && saved !== theme) setTheme(saved);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = saved || (prefersDark ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
   }, []);
 
   // Whenever theme changes, apply it and remember it.
