@@ -30,7 +30,7 @@ const PROJECTS = [
     description:
       "An AI-powered personal health companion focused on helping users monitor, understand, and improve their wellness.",
     highlights: ["Health dashboard", "AI health summaries", "Medication reminders", "Nutrition tracker", "Mood & energy check-ins", "AI health assistant", "Pattern detection", "Privacy Control Center"],
-    tech: ["Next.js", "React", "Tailwind CSS", "Node.js", "NestJS", "Google Gemini API", "Supabase", "Vercel"],
+    tech: ["Next.js", "React", "Tailwind CSS", "Node.js", "NestJS", "OpenRouter API", "Supabase", "Vercel"],
   },
   {
     name: "Savings",

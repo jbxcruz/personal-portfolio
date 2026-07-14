@@ -75,6 +75,14 @@ useEffect(() => {
       go(d > 0 ? 1 : -1);
     };
 const onKey = (e) => {
+      // never hijack keys while the user is typing
+      const t = e.target;
+      const typing =
+        t?.tagName === "INPUT" ||
+        t?.tagName === "TEXTAREA" ||
+        t?.isContentEditable;
+      if (typing) return;
+
       if (lockedRef.current) return;
       const now = Date.now();
       if (now - cooldownRef.current < COOLDOWN) return;
