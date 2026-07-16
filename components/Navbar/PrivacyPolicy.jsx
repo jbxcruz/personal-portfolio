@@ -7,6 +7,7 @@ export default function PrivacyPolicy({ onClose }) {
   return (
     <motion.div
       className={styles.backdrop}
+      data-nav-lock
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

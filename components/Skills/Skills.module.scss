@@ -295,7 +295,15 @@
 
 
 @media (max-width: 900px) {
-  .skills { padding: 4.5rem 1.1rem 1.25rem; justify-content: center; gap: 0.5rem; }
+  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  .skills {
+    padding: 4.5rem 1.1rem 1.25rem;
+    justify-content: center;
+    justify-content: safe center;
+    overflow-y: auto;
+    gap: 0.5rem;
+  }
+  .skills > * { flex-shrink: 0; }
   .heading {
     position: static;
     transform: none;

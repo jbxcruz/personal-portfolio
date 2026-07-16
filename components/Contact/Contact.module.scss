@@ -235,7 +235,13 @@
 .noteBad { color: #e14b4a; opacity: 1; }
 
 @media (max-width: 880px) {
-  .contact { padding: 5rem 1.1rem 1.5rem; }
+  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  .contact {
+    align-items: center;
+    align-items: safe center;
+    overflow-y: auto;
+    padding: 5rem 1.1rem 1.5rem;
+  }
   .grid { grid-template-columns: 1fr; gap: 1rem; }
   .heading { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 0.4rem; }
   .lead { font-size: 0.85rem; margin-bottom: 0.6rem; max-width: none; }
@@ -244,18 +250,21 @@
   .card { padding: 1.1rem 1.1rem 1.2rem; gap: 0.6rem; }
   .row { grid-template-columns: 1fr; gap: 0.6rem; }
   .textarea { min-height: 92px; }
-  .input, .textarea { font-size: 0.86rem; padding: 0.5rem 0.65rem; }
+  /* 16px floor: anything smaller makes iOS zoom into the field on focus */
+  .input, .textarea { font-size: 1rem; padding: 0.5rem 0.65rem; }
 }
 
-/* short viewports: the form scrolls inside the section */
+/* short viewports: the form scrolls inside the section
+   (.contact is a row flex container, so the vertical axis is align-items) */
 @media (max-height: 560px) {
   .contact {
-    justify-content: flex-start;
+    align-items: flex-start;
+    align-items: safe center;
     overflow-y: auto;
     padding: 5rem clamp(1.1rem, 6vw, 5rem) 1.5rem;
   }
-  .contact > * { flex-shrink: 0; }
   .mascotZone { display: none; }
   .heading { font-size: clamp(1.6rem, 5vw, 2.4rem); }
   .textarea { min-height: 92px; }
+  .input, .textarea { font-size: 1rem; }
 }

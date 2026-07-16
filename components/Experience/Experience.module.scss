@@ -186,12 +186,20 @@
 
 
 @media (max-width: 760px) {
+  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  .experience {
+    justify-content: center;
+    justify-content: safe center;
+    overflow-y: auto;
+    padding: 7rem clamp(1.25rem, 5vw, 3rem) 1.5rem;
+  }
+  .experience > * { flex-shrink: 0; }
   .map { height: 300px; margin-top: 0.5rem; }
   .lvTag { width: 46px; height: 36px; font-size: 0.85rem; }
   .lvYears { font-size: 0.58rem; }
   .jebby { width: 52px; margin-left: -26px; margin-top: -56px; }
   .quest { height: auto; min-height: 200px; }
-  .heading { font-size: clamp(1.7rem, 7vw, 2.6rem); }
+  .heading { top: 4.5rem; font-size: clamp(1.7rem, 7vw, 2.6rem); }
 }
 
 /* short viewports: the map + quest card scroll inside the section */

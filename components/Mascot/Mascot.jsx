@@ -95,12 +95,14 @@ export default function Mascot({ trigger = 0, fallSignal = 0, onReady }) {
       await body.start({ y: [-6, 0], transition: { duration: 0.28, ease: "easeOut" } });
       if (runIdRef.current !== myRun) return;
 
+      // navigation unlocks as soon as Jebby lands; swipes shouldn't feel dead
+      onReady?.();
+
       await wait(1000); // hold before clicks are allowed
       if (runIdRef.current !== myRun) return;
 
       readyRef.current = true;
       setPhase("ready");
-      onReady?.();
     }
 
     sequence();

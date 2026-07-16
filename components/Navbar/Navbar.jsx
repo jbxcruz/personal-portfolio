@@ -112,6 +112,7 @@ export default function Navbar() {
           <motion.div
             className={styles.overlay}
             data-scroll
+            data-nav-lock
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

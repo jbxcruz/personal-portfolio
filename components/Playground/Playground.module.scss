@@ -868,6 +868,17 @@
   .spaceCanvas { height: auto; width: 100%; }
 }
 
+@media (max-width: 760px) {
+  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  .playground {
+    justify-content: center;
+    justify-content: safe center;
+    overflow-y: auto;
+    padding: 5rem 1rem 1rem;
+  }
+  .playground > * { flex-shrink: 0; }
+}
+
 @media (max-width: 640px) {
   .screen { height: min(430px, 62vh); }
   .folderGrid { grid-template-columns: 1fr 1fr; }

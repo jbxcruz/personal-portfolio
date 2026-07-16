@@ -58,6 +58,10 @@ useEffect(() => {
       return el && el.scrollHeight > el.clientHeight + 1 ? el : null;
     };
 
+    // overlays (menu, privacy policy) own their gestures entirely:
+    // never hand off to section navigation from inside them
+    const isIsolated = (target) => !!target?.closest?.("[data-nav-lock]");
+
     const onWheel = (e) => {
       const sc = scrollableFrom(e.target);
       if (sc) {
@@ -65,6 +69,7 @@ useEffect(() => {
         const atBottom = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 1 && e.deltaY > 0;
         if (!atTop && !atBottom) return; // let the inner area scroll natively
       }
+      if (isIsolated(e.target)) return;
       e.preventDefault();
       if (lockedRef.current) return;
       const now = Date.now();
@@ -97,29 +102,44 @@ const onKey = (e) => {
       }
     };
     const onTouchStart = (e) => {
+      const sc = scrollableFrom(e.target);
       touchRef.current = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
-        inScroll: !!scrollableFrom(e.target),
+        isolated: isIsolated(e.target),
+        sc,
+        // edge state at gesture start: scrolling wins mid-content,
+        // a swipe past the edge hands off to section navigation
+        atTop: sc ? sc.scrollTop <= 0 : true,
+        atBottom: sc
+          ? sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 1
+          : true,
       };
     };
     const onTouchEnd = (e) => {
       if (lockedRef.current) return;
       if (!touchRef.current) return;
-      const { x, y, inScroll } = touchRef.current;
+      const { x, y, sc, atTop, atBottom, isolated } = touchRef.current;
       touchRef.current = null;
-      if (inScroll) return; // finger was scrolling content, not navigating
+      if (isolated) return;
       const dx = e.changedTouches[0].clientX - x;
       const dy = e.changedTouches[0].clientY - y;
       const ax = Math.abs(dx);
       const ay = Math.abs(dy);
-      if (Math.max(ax, ay) > 45) {
-        const now = Date.now();
-        if (now - cooldownRef.current < COOLDOWN) return;
-        cooldownRef.current = now;
-        const primary = ay >= ax ? dy : dx;
-        go(primary < 0 ? 1 : -1);
+      if (Math.max(ax, ay) <= 45) return;
+      if (sc) {
+        // finger started in scrollable content: only navigate on a vertical
+        // swipe that pushes past the edge it started at (same as wheel)
+        if (ax > ay) return;
+        const forward = dy < 0; // swipe up = next section
+        if (forward && !atBottom) return;
+        if (!forward && !atTop) return;
       }
+      const now = Date.now();
+      if (now - cooldownRef.current < COOLDOWN) return;
+      cooldownRef.current = now;
+      const primary = ay >= ax ? dy : dx;
+      go(primary < 0 ? 1 : -1);
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
