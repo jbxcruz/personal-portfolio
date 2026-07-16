@@ -170,14 +170,16 @@
   .menuItem { padding: 0.85rem 0.5rem; box-shadow: 4px 4px 0 var(--ink); }
 }
 
-/* short viewports (landscape phones, small windows): let the menu scroll */
-@media (max-height: 560px) {
+/* landscape phones, small windows: let the menu scroll (scrollbar hidden) */
+@media (max-height: 560px) and (orientation: landscape) {
   .overlay {
     justify-content: flex-start;
     overflow-y: auto;
+    scrollbar-width: none;
     gap: 1rem;
     padding: 4.5rem 1.25rem 1.5rem;
   }
+  .overlay::-webkit-scrollbar { display: none; }
   .overlay > * { flex-shrink: 0; }
   .close { top: 12px; width: 40px; height: 40px; }
   .menuItem { padding: 0.7rem 0.5rem; }

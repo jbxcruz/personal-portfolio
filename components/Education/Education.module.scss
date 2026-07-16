@@ -184,23 +184,22 @@
 
 
 @media (max-width: 760px) {
-  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  /* "safe" = centered when it fits, top-aligned if space ever runs out */
   .education {
-    padding: 4.5rem 1.1rem 1.5rem;
+    padding: 4.25rem 1.1rem 1.25rem;
     justify-content: center;
     justify-content: safe center;
-    overflow-y: auto;
   }
   .education > * { flex-shrink: 0; }
   .heading {
     position: static;
     align-self: flex-start;
     font-size: clamp(1.5rem, 6.5vw, 2.1rem);
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.5rem;
   }
-  .cards { gap: 0.8rem; }
-  .card { padding: 0.8rem 0.9rem 0.9rem; border-top-width: 8px; }
-  .charZone { width: 74px; margin-bottom: 0.4rem; }
+  .cards { gap: 0.7rem; }
+  .card { padding: 0.7rem 0.9rem 0.8rem; border-top-width: 8px; }
+  .charZone { width: 64px; margin-bottom: 0.35rem; }
   .degree { font-size: 0.98rem; margin-bottom: 0.25rem; }
   .school { font-size: 0.7rem; line-height: 1.35; margin-bottom: 0.45rem; }
   .years { font-size: 0.66rem; padding: 0.14rem 0.55rem; }
@@ -212,13 +211,15 @@
   .bubble { font-size: 0.76rem; }
 }
 
-/* short viewports: cards scroll inside the section (kept last so it wins) */
-@media (max-height: 560px) {
+/* landscape phones only: scrolling is unavoidable there (scrollbar hidden) */
+@media (max-height: 560px) and (orientation: landscape) {
   .education {
     justify-content: flex-start;
     overflow-y: auto;
+    scrollbar-width: none;
     padding: 7rem clamp(1.25rem, 6vw, 5rem) 1.5rem;
   }
+  .education::-webkit-scrollbar { display: none; }
   .education > * { flex-shrink: 0; }
   .heading {
     position: absolute;

@@ -295,12 +295,11 @@
 
 
 @media (max-width: 900px) {
-  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  /* "safe" = centered when it fits, top-aligned if space ever runs out */
   .skills {
     padding: 4.5rem 1.1rem 1.25rem;
     justify-content: center;
     justify-content: safe center;
-    overflow-y: auto;
     gap: 0.5rem;
   }
   .skills > * { flex-shrink: 0; }
@@ -333,9 +332,34 @@
   .bubble { font-size: 0.78rem; }
 }
 
-/* short viewports: compact column that scrolls inside the section */
-@media (max-height: 560px) {
-  .skills { justify-content: flex-start; overflow-y: auto; padding: 4.5rem 1.1rem 1.25rem; gap: 0.5rem; }
+/* phones: everything tightened so the whole section fits a small screen
+   (e.g. iPhone SE with browser bars visible) with no scrolling at all */
+@media (max-width: 480px) {
+  .skills { padding: 3.9rem 1rem 1rem; gap: 0.3rem; }
+  .layout { gap: 0.55rem; }
+  .stage { width: min(132px, 40vw); }
+  .arrow { width: 32px; height: 32px; font-size: 1rem; }
+  .nameplate { min-height: 50px; gap: 0.18rem; }
+  .charName { font-size: 0.95rem; }
+  .star { width: 13px; height: 13px; }
+  .dot { width: 6px; height: 6px; }
+  .heading { font-size: 1.35rem; margin: 0 0 0.15rem; }
+  .stageCol { gap: 0.55rem; }
+  .group { margin-bottom: 0.55rem; }
+  .groupHead { gap: 0.4rem; margin-bottom: 0.3rem; }
+  .groupDot { width: 13px; height: 13px; box-shadow: 1px 1px 0 var(--ink); }
+  .groupName { font-size: 0.85rem; }
+  .barRow { grid-template-columns: 80px 1fr 32px; gap: 0.4rem; margin-bottom: 0.2rem; }
+  .barName { font-size: 0.66rem; }
+  .barTrack { height: 9px; }
+  .barPct { font-size: 0.62rem; }
+  .bubble { font-size: 0.72rem; }
+}
+
+/* landscape phones only: scrolling is unavoidable there (scrollbar hidden) */
+@media (max-height: 560px) and (orientation: landscape) {
+  .skills { justify-content: flex-start; overflow-y: auto; scrollbar-width: none; padding: 4.5rem 1.1rem 1.25rem; gap: 0.5rem; }
+  .skills::-webkit-scrollbar { display: none; }
   .skills > * { flex-shrink: 0; }
   .heading {
     position: static;

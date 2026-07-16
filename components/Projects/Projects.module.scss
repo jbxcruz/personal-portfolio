@@ -16,7 +16,7 @@
   opacity: 0.25;
 }
 
-/* short viewports: keep the explorer window clear of the navbar */
-@media (max-height: 560px) {
+/* landscape phones: keep the explorer window clear of the navbar */
+@media (max-height: 560px) and (orientation: landscape) {
   .projects { padding: 4.5rem 1rem 1rem; }
 }

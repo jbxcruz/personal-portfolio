@@ -154,26 +154,25 @@
 }
 
 @media (max-width: 760px) {
-  /* "safe" keeps the grid centered when it fits, scrollable from the top when not */
+  /* "safe" = centered when it fits, top-aligned if space ever runs out */
   .certs {
-    padding: 4.5rem 1rem 1.25rem;
-    gap: 0.8rem;
+    padding: 4rem 1rem 1rem;
+    gap: 0.55rem;
     justify-content: center;
     justify-content: safe center;
-    overflow-y: auto;
   }
   .certs > * { flex-shrink: 0; }
   .heading { font-size: clamp(1.5rem, 6.5vw, 2.1rem); }
-  .head { gap: 0.5rem; }
-  .chip { font-size: 0.68rem; padding: 0.24rem 0.65rem; }
+  .head { gap: 0.4rem; }
+  .chip { font-size: 0.64rem; padding: 0.2rem 0.55rem; }
   .gridWrap { overflow: visible; flex: initial; }
-  .grid { grid-template-columns: 1fr; gap: 6px; }
+  .grid { grid-template-columns: 1fr; gap: 4px; }
   .card {
     flex-direction: row;
     align-items: center;
     gap: 0.55rem;
     min-height: 0;
-    padding: 0.45rem 0.7rem 0.45rem 0.9rem;
+    padding: 0.35rem 0.7rem 0.35rem 0.9rem;
   }
   .accent { top: 0; bottom: 0; left: 0; right: auto; width: 7px; height: auto; }
   .cardHead { margin: 0; flex-shrink: 0; }
@@ -185,14 +184,16 @@
   .open { font-size: 0.7rem; }
 }
 
-/* short viewports: card grid scrolls inside the section (kept last so it wins) */
-@media (max-height: 560px) {
+/* landscape phones only: scrolling is unavoidable there (scrollbar hidden) */
+@media (max-height: 560px) and (orientation: landscape) {
   .certs {
     justify-content: flex-start;
     overflow-y: auto;
+    scrollbar-width: none;
     gap: 0.8rem;
     padding: 4.5rem clamp(1rem, 6vw, 5rem) 1.25rem;
   }
+  .certs::-webkit-scrollbar { display: none; }
   .certs > * { flex-shrink: 0; }
   .gridWrap { flex: none; overflow: visible; }
   .heading { font-size: clamp(1.5rem, 4vw, 2.2rem); }

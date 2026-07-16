@@ -235,34 +235,35 @@
 .noteBad { color: #e14b4a; opacity: 1; }
 
 @media (max-width: 880px) {
-  /* scroll if the browser bars eat the height; "safe" keeps it centered when it fits */
+  /* compact enough to fit a small phone screen with no scrolling */
   .contact {
     align-items: center;
     align-items: safe center;
-    overflow-y: auto;
-    padding: 5rem 1.1rem 1.5rem;
+    padding: 4.25rem 1.1rem 1.25rem;
   }
-  .grid { grid-template-columns: 1fr; gap: 1rem; }
-  .heading { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 0.4rem; }
-  .lead { font-size: 0.85rem; margin-bottom: 0.6rem; max-width: none; }
-  .direct { margin-bottom: 0.8rem; font-size: 0.7rem; }
+  .grid { grid-template-columns: 1fr; gap: 0.7rem; }
+  .heading { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 0.3rem; }
+  .lead { font-size: 0.85rem; margin-bottom: 0.4rem; max-width: none; }
+  .direct { margin-bottom: 0.4rem; font-size: 0.7rem; }
   .mascotZone { display: none; }
-  .card { padding: 1.1rem 1.1rem 1.2rem; gap: 0.6rem; }
-  .row { grid-template-columns: 1fr; gap: 0.6rem; }
-  .textarea { min-height: 92px; }
+  .card { padding: 0.8rem 1rem 0.9rem; gap: 0.45rem; }
+  .row { grid-template-columns: 1fr; gap: 0.45rem; }
+  .textarea { min-height: 64px; }
   /* 16px floor: anything smaller makes iOS zoom into the field on focus */
-  .input, .textarea { font-size: 1rem; padding: 0.5rem 0.65rem; }
+  .input, .textarea { font-size: 1rem; padding: 0.45rem 0.65rem; }
+  .send { padding: 0.6rem 1rem; }
 }
 
-/* short viewports: the form scrolls inside the section
-   (.contact is a row flex container, so the vertical axis is align-items) */
-@media (max-height: 560px) {
+/* landscape phones only: the form scrolls (scrollbar hidden) */
+@media (max-height: 560px) and (orientation: landscape) {
   .contact {
     align-items: flex-start;
     align-items: safe center;
     overflow-y: auto;
+    scrollbar-width: none;
     padding: 5rem clamp(1.1rem, 6vw, 5rem) 1.5rem;
   }
+  .contact::-webkit-scrollbar { display: none; }
   .mascotZone { display: none; }
   .heading { font-size: clamp(1.6rem, 5vw, 2.4rem); }
   .textarea { min-height: 92px; }
