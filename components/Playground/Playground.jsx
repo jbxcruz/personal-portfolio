@@ -210,14 +210,14 @@ export default function Playground() {
   const cats = [...new Set(GAMES.map((g) => g.cat))];
 
   return (
-    <section className={styles.playground} id="playground">
+    <section className={styles.playground} id="playground" data-scroll>
       <div className={styles.cabinet}>
         <div className={styles.marquee}>JEBBY&rsquo;S PLAYGROUND</div>
 
         <div className={styles.screen}>
           <AnimatePresence mode="wait" initial={false}>
             {screen === "menu" && (
-              <motion.div key="menu" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="menu" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 {cats.map((cat) => (
                   <div key={cat} className={styles.catBlock}>
                     <span className={styles.catName}>{cat}</span>
@@ -246,7 +246,7 @@ export default function Playground() {
             )}
 
             {screen === "gamemenu" && game && (
-              <motion.div key="gm" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="gm" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>{game.name}</h3>
                 <p className={styles.gameDesc}>{game.desc}</p>
                 {game.diffs && (
@@ -318,7 +318,7 @@ export default function Playground() {
             )}
 
             {screen === "shop" && game && (
-              <motion.div key="shop" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="shop" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>Shop</h3>
                 <Shop />
                 <button className={styles.menuBtn} onClick={() => setScreen("gamemenu")}>← Back</button>
@@ -326,7 +326,7 @@ export default function Playground() {
             )}
 
             {screen === "arsenals" && game && (
-              <motion.div key="arsenals" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="arsenals" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>Arsenals</h3>
                 <Arsenals onExit={() => setScreen("gamemenu")} />
               </motion.div>
@@ -334,14 +334,14 @@ export default function Playground() {
             
 
             {screen === "almanac" && game && (
-              <motion.div key="almanac" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="almanac" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>Almanac</h3>
                 <SpaceAlmanac onExit={() => setScreen("gamemenu")} />
               </motion.div>
             )}
 
             {screen === "scores" && game && (
-              <motion.div key="scores" className={styles.inner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <motion.div key="scores" className={styles.inner} data-scroll initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <h3 className={styles.gameTitle}>Scoreboard</h3>
                 <span className={styles.scoreSub}>{game.name}{game.diffs ? ` · ${diff}` : ""}</span>
                 {scores.length === 0 ? (
@@ -358,7 +358,7 @@ export default function Playground() {
             )}
 
             {screen === "gameover" && game && (
-              <motion.div key="over" className={styles.inner} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+              <motion.div key="over" className={styles.inner} data-scroll initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
                 <h3 className={styles.gameTitle}>Game Over</h3>
                 <span className={styles.finalScore}>{lastScore == null ? "BOOM!" : `${lastScore} ${game.unit}`}</span>
                 <div className={styles.menuBtns}>

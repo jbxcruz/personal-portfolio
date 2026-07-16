@@ -27,7 +27,7 @@ export default function Certifications() {
   const shown = filter === "All" ? CERTS : CERTS.filter((c) => c.issuer === filter);
 
   return (
-    <section ref={sectionRef} className={styles.certs} id="certs">
+    <section ref={sectionRef} className={styles.certs} id="certs" data-scroll>
       <div className={styles.head}>
         <h2 className={styles.heading}>Certifications</h2>
         <div className={styles.filters}>

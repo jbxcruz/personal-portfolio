@@ -85,6 +85,11 @@
 }
 
 
+/* short viewports: keep the portal below the fixed navbar */
+@media (max-height: 560px) {
+  .portalPos { top: 4.5rem; }
+}
+
 @media (max-width: 760px) {
   .stage { z-index: 5; }
   .portalPos { width: 88px; top: 7.5vh; right: 5vw; }

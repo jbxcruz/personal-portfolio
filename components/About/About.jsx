@@ -15,7 +15,7 @@ export default function About() {
   const active = nav?.activeId === "about";
 
   return (
-    <section className={styles.about} id="about">
+    <section className={styles.about} id="about" data-scroll>
       <AboutFallMascot />
 
       <motion.div

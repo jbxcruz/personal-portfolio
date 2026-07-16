@@ -243,6 +243,10 @@ button.crumb:hover {
 }
 
 
+@media (max-height: 560px) {
+  .window { height: 100%; max-height: 560px; }
+}
+
 @media (max-width: 640px) {
   .window { height: min(460px, 66vh); }
   .body { padding: 0.8rem; }

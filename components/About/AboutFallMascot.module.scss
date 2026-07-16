@@ -32,3 +32,8 @@
 @media (max-width: 760px) {
   .wrap { width: 58px; left: auto; right: 6vw; bottom: 6%; }
 }
+
+/* short viewports: the section scrolls, so keep the mascot out of the text */
+@media (max-height: 560px) {
+  .wrap { display: none; }
+}

@@ -82,7 +82,7 @@ export default function Experience() {
   const cur = LEVELS[active];
 
   return (
-    <section className={styles.experience} id="experience">
+    <section className={styles.experience} id="experience" data-scroll>
       <h2 className={styles.heading}>Experience</h2>
 
       <div className={styles.map}>

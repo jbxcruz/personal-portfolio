@@ -179,7 +179,7 @@ export default function Skills() {
   let barDelay = 0.25;
 
   return (
-    <section className={styles.skills} id="skills">
+    <section className={styles.skills} id="skills" data-scroll>
       <div className={styles.layout}>
         {/* character stage */}
         <div className={styles.stageCol}>

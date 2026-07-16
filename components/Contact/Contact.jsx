@@ -121,7 +121,7 @@ export default function Contact() {
   const busy = status === "sending";
 
   return (
-    <section className={styles.contact} id="contact">
+    <section className={styles.contact} id="contact" data-scroll>
       <div className={styles.grid}>
         <div className={styles.left}>
           <h2 className={styles.heading}>Let&rsquo;s talk.</h2>

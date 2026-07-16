@@ -169,3 +169,17 @@
   .brand { gap: 0.7rem; }
   .menuItem { padding: 0.85rem 0.5rem; box-shadow: 4px 4px 0 var(--ink); }
 }
+
+/* short viewports (landscape phones, small windows): let the menu scroll */
+@media (max-height: 560px) {
+  .overlay {
+    justify-content: flex-start;
+    overflow-y: auto;
+    gap: 1rem;
+    padding: 4.5rem 1.25rem 1.5rem;
+  }
+  .overlay > * { flex-shrink: 0; }
+  .close { top: 12px; width: 40px; height: 40px; }
+  .menuItem { padding: 0.7rem 0.5rem; }
+  .social { width: 40px; height: 40px; }
+}

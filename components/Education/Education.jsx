@@ -178,7 +178,7 @@ function Card({ s }) {
 
 export default function Education() {
   return (
-    <section className={styles.education} id="education">
+    <section className={styles.education} id="education" data-scroll>
       <h2 className={styles.heading}>Education</h2>
       <div className={styles.cards}>
         {SCHOOLS.map((s) => (

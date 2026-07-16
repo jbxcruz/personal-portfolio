@@ -133,6 +133,7 @@ export default function ProjectFolders() {
             <motion.div
               key="grid"
               className={styles.grid}
+              data-scroll
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
@@ -167,7 +168,7 @@ export default function ProjectFolders() {
 
               <h3 className={styles.detailTitle}>{open.title}</h3>
 
-              <div className={styles.scrollArea}>
+              <div className={styles.scrollArea} data-scroll>
                 <p className={styles.desc}>{open.description}</p>
                 <div className={styles.group}>
                   <span className={styles.label}>Highlights</span>
